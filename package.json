@@ -1,0 +1,22 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "Distributor Management System",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zala49/Distributor-Management-System.git"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "Hitesh Zala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zala49/Distributor-Management-System/issues"
+  },
+  "homepage": "https://github.com/zala49/Distributor-Management-System#readme"
+}
