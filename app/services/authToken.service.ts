@@ -58,7 +58,7 @@ export class AuthTokenService {
 };
 
 type UserInfoDetails = {
-    Id: string,
+    UserId: string,
     Auth0UserId: string,
     Name: string,
     Email: string,

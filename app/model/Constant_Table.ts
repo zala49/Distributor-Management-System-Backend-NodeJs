@@ -1,8 +1,10 @@
 export enum Table_Name {
     'users_info' = 'users_info',
     'meta_data' = 'meta_data',
-    'orders' = 'orders',
+    'citys' = 'citys',
     'salesmen' = 'salesmen',
     'distributor' = 'distibutor',
-    'merchant' = 'merchant'
+    'merchant' = 'merchant',
+    'orders' = 'orders',
+    'products' = 'products'
 };

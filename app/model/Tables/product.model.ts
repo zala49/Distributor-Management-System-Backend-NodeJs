@@ -3,27 +3,18 @@ import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
 
-@Entity(Table_Name.salesmen)
-@Unique([nameOf<SalesmenEntity>('SalesManTelNo'), nameOf<SalesmenEntity>('SalesManEmail')])
+@Entity(Table_Name.products)
+@Unique([nameOf<ProductEntity>('ProductName'), nameOf<ProductEntity>('ProductCategory')])
 
-export class SalesmenEntity extends BaseModel {
+export class ProductEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
-    SalesmanId: string
+    ProductId: string
 
     @Column()
-    SalesManName: string
+    ProductName: string
 
     @Column()
-    SalesManEmail: string
-
-    @Column()
-    SalesManTelNo: string
-
-    @Column()
-    SalesManAddress: string
-
-    @Column()
-    SalesManCity: string
+    ProductCategory: string
 
     @CreateDateColumn()
     CreatedAt: Date

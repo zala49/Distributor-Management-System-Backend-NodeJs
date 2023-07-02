@@ -4,6 +4,8 @@ import http from 'http';
 import cors from "cors";
 import { ErrorHandlerMiddleware } from "./app/middlewares/errorHandlerMiddleware";
 import UserRoute from './app/router/userInfo.route';
+import CityRoute from './app/router/city.router';
+import ProductRoute from './app/router/product.router';
 import { checkJwt } from "./app/middlewares/auth.middleware";
 import { development } from "./config/environment";
 
@@ -22,13 +24,15 @@ app.use(ErrorHandlerMiddleware.handler);
 
 
 app.use("/api/user", UserRoute);
+app.use("/api/city", CityRoute);
+app.use("/api/product", ProductRoute);
 
 server.listen(port, () => {
   console.log(`⚡️[server]: Server and Socket is running at http://localhost:${port}`)
 });
 
 
-const axios = require('axios');
+// const axios = require('axios');
 
 
 // const getToken = async () => {
@@ -41,7 +45,7 @@ const axios = require('axios');
 //     });
 //     return response.data.access_token;
 //   } catch (error: any) {
-//      console.log("sorry got error!")
+//      console.log("sorry got error!", error)
 //   }
 // };
 

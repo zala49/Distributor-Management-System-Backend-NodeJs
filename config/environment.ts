@@ -30,14 +30,14 @@ export const development: dbConfigType = {
     dialect: "postgres",
     jwtVerification: {
         jwksUri: 'https://mbeat.us.auth0.com/.well-known/jwks.json',
-        audience: 'http://localhost:8000/api',
-        issuer: 'https://mbeat.us.auth0.com/api/v2/'
+        audience: 'https://mbeat.us.auth0.com/api/v2/',
+        issuer: 'https://mbeat.us.auth0.com/'
     },
     managementApiCred: {
-        url: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/oauth/token',
+        url: 'https://mbeat.us.auth0.com/oauth/token',
         grant_type: 'client_credentials',
-        client_id: 'n2cd1KemVlQkPWEIynB0rJl8cfBnHIJs',
-        client_secret: 'I2o2Ipuom31KweOIQTXkKKR8ZMuiNsgmrmijRPRfSA8OEhMXUqJv9tgikVOEn77A',
+        client_id: 'X5RhAXjVxx2Tw8mcefvpmaF59xZBGLRn',
+        client_secret: 'B19fijc1T9e7ynwye3b8pqWWk5GGiZcmklzdg7fO2iWoVd7uiKAoWc1Z5JRx9Pm1',
         audience: 'https://mbeat.us.auth0.com/api/v2/'
     }
 };

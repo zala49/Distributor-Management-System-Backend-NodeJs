@@ -4,7 +4,7 @@ import { Table_Name } from "../Constant_Table";
 @Entity(Table_Name.users_info)
 export class UserInfoEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
-    Id: string
+    UserId: string
 
     @Column({
         unique: true

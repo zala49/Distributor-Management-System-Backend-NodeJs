@@ -6,7 +6,7 @@ import { nameOf } from "../../helpers/helper";
 @Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')])
 export class OrdersEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
-    Id: string
+    OrderId: string
 
     @Column({type: 'uuid'})
     ProductId: string

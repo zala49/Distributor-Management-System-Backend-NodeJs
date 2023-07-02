@@ -7,7 +7,7 @@ import { nameOf } from "../../helpers/helper";
 
 export class MetaDataEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
-    Id: string
+    MetaDataId: string
 
     @Column()
     Type: string
