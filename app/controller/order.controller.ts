@@ -7,8 +7,10 @@ import { StatusCodes } from "http-status-codes";
 import { nameOf } from "../helpers/helper";
 import { USER_ROLES } from "../../config/constants";
 import { BadRequestError } from "../common/ApiErrorResponse";
+import { AuthTokenService } from "../services/authToken.service";
 
 export const insertOrder = async (req: CustomRequest, res: Response) => {
+    const userLoginInfo = await AuthTokenService.getUserInfoDbByAuth0UserId(req.auth?.sub!);
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
     const returnOrders = await orderRepo.upsert({
@@ -17,7 +19,8 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         ProductName: req.body.ProductName,
         ProductCategory: req.body.ProductCategory,
         ProductQuantity: req.body.ProductQuantity,
-        SalesMen: 'Login Person', // Need to add 
+        SalesMen: 'Login Person', // Need to add ,
+        MerchantDetails: req.body.MerchatDetails
     }, {
         conflictPaths: [nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')]
     });

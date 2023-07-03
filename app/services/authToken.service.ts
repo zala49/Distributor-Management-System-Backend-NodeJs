@@ -29,7 +29,7 @@ export class AuthTokenService {
             axios.request(options).then(function (response: any) {
                 res(response.data.access_token)
             }).catch(function (error: any) {
-                rej(error);
+            rej(error);
             });
         })
     };
