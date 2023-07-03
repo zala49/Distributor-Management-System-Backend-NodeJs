@@ -12,6 +12,9 @@ export class OrdersEntity extends BaseEntity {
     ProductId: string
 
     @Column()
+    MerchantDetails: string
+
+    @Column()
     SalesMen: string
 
     @Column()
@@ -25,6 +28,9 @@ export class OrdersEntity extends BaseEntity {
 
     @Column()
     OrderDate: Date
+
+    @Column({default: 'Pending'})
+    Status: string
     
     @CreateDateColumn()
     CreatedAt: Date

@@ -29,15 +29,15 @@ export const development: dbConfigType = {
     database: "DMS",
     dialect: "postgres",
     jwtVerification: {
-        jwksUri: 'https://mbeat.us.auth0.com/.well-known/jwks.json',
-        audience: 'https://mbeat.us.auth0.com/api/v2/',
-        issuer: 'https://mbeat.us.auth0.com/'
+        jwksUri: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/.well-known/jwks.json',
+        audience: 'http://localhost:4200',
+        issuer: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/',
     },
     managementApiCred: {
-        url: 'https://mbeat.us.auth0.com/oauth/token',
+        url: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/oauth/token',
         grant_type: 'client_credentials',
-        client_id: 'X5RhAXjVxx2Tw8mcefvpmaF59xZBGLRn',
-        client_secret: 'B19fijc1T9e7ynwye3b8pqWWk5GGiZcmklzdg7fO2iWoVd7uiKAoWc1Z5JRx9Pm1',
-        audience: 'https://mbeat.us.auth0.com/api/v2/'
+        client_id: 'mMe017OYhbhsgUvJVZ3GWoAuxsSuJzOn',
+        client_secret: 'Rla6mg6m8Bwq3Yb2vPrneqmfPoGQyP9uG1aHg6rDsFUsqFRoZKOPdsqFlssaa0yx',
+        audience: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/api/v2/'
     }
 };

@@ -19,7 +19,7 @@ app.use(express.urlencoded());
 
 
 const port = process.env.PORT ?? 8000;
-app.use(checkJwt);
+// app.use(checkJwt);
 app.use(ErrorHandlerMiddleware.handler);
 
 
@@ -45,7 +45,7 @@ server.listen(port, () => {
 //     });
 //     return response.data.access_token;
 //   } catch (error: any) {
-//      console.log("sorry got error!", error)
+//      console.log("sorry got error!")
 //   }
 // };
 

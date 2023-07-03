@@ -25,12 +25,10 @@ export const loginUserDetails = async (req: CustomRequest, res: express.Response
 
 export const getUsers = async (req: CustomRequest, res: Response) => {
 
-    // const token = await AuthTokenService.getAccessToken();
-    const token1 = await AuthTokenService.getUserInfoByToken('eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9tYmVhdC51cy5hdXRoMC5jb20vIn0..Ir8FJ_wOc8LF1AbZ.5kmDy2Y_RBxpy-p15Ue1wLaOYX0rU-96VNX6jGg5ifbvAkT4imIrP51KJsKmNWAJhm4ybH5zOY_LqxL4NmDqvdLLVnZCPhvTt6n3m7AeeO3Ngt6HNjwygCOQ_2Mrwo_BfqSFfOHzbwrNaiCIjbmgjTWlkqyoiaVV0IF2KG-xN3962KgsFJt0fpMFxaUqCVmCzOxJKI9nI-Gs5uZFsimJIRcSpF05O6ASUVkG3vnGMAZe6DYd6cmF1WJNwiAPWF-aIHVbTEbEnU_1Zo7ow91hzdOnia1zOYaGdNM8CkvGdgyHJ6Or_8Qno.WSnnVbB-XTq66hOpTCGbPw')
-        // console.log(token1.data, 'token1')
-    // let apiResponse = await axios.get(`https://${process.env.AUTH0_DOMAIN}/api/v2/users`, {
-    //     headers: { "authorization": `Bearer ${token}` },
-    // })
+    const token = await AuthTokenService.getAccessToken();
+    let apiResponse = await axios.get(`https://${process.env.AUTH0_DOMAIN}/api/v2/users`, {
+        headers: { "authorization": `Bearer ${token}` },
+    })
     // let users: Auth0UserDetails[] = []
     // if (apiResponse && apiResponse.data) {
     // const database = await connectToDatabase();
@@ -43,7 +41,7 @@ export const getUsers = async (req: CustomRequest, res: Response) => {
     // })
     // }
 
-    return new SuccessResponse(StatusCodes.OK, 'apiResponse.data', 'apiResponse').send(res)
+    return new SuccessResponse(StatusCodes.OK, apiResponse.data, 'apiResponse').send(res)
 };
 
 export const getAllRoles = async (req: CustomRequest, res: Response) => {
