@@ -10,7 +10,7 @@ import { BadRequestError } from "../common/ApiErrorResponse";
 import { AuthTokenService } from "../services/authToken.service";
 
 export const insertOrder = async (req: CustomRequest, res: Response) => {
-    const userLoginInfo = await AuthTokenService.getUserInfoDbByAuth0UserId(req.auth?.sub!);
+    // const userLoginInfo = await AuthTokenService.getUserInfoDbByAuth0UserId(req.auth?.sub!);
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
     const returnOrders = await orderRepo.upsert({
@@ -20,7 +20,7 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         ProductCategory: req.body.ProductCategory,
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: 'Login Person', // Need to add ,
-        MerchantDetails: req.body.MerchatDetails
+        MerchantId: req.body.MerchantId
     }, {
         conflictPaths: [nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')]
     });
@@ -30,16 +30,20 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
 export const getOrders = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
-    const adminListOfOrder = await orderRepo.find();
-    const salesmanListOfOrder = await orderRepo.find({
-        where: { SalesMen: '' }
-    });
+    const adminListOfOrder = await orderRepo.find(
+        {
+            relations: {}
+        }
+    );
+    // const salesmanListOfOrder = await orderRepo.find({
+    //     where: { SalesMen: '' }
+    // });
     if (USER_ROLES.ADMIN) {
         return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
     };
-    if (USER_ROLES.SALESMEN) {
-        return new SuccessResponse(StatusCodes.OK, salesmanListOfOrder, 'Get orders successfully!!').send(res);
-    };
+    // if (USER_ROLES.SALESMEN) {
+    //     return new SuccessResponse(StatusCodes.OK, salesmanListOfOrder, 'Get orders successfully!!').send(res);
+    // };
 };
 
 export const updateOrders = async (req: CustomRequest, res: Response) => {

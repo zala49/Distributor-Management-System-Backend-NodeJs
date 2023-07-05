@@ -6,8 +6,10 @@ import { ErrorHandlerMiddleware } from "./app/middlewares/errorHandlerMiddleware
 import UserRoute from './app/router/userInfo.route';
 import CityRoute from './app/router/city.router';
 import ProductRoute from './app/router/product.router';
-import { checkJwt } from "./app/middlewares/auth.middleware";
-import { development } from "./config/environment";
+import OrderRoute from './app/router/order.router';
+import MerchantRoute from './app/router/merchant.route';
+import DistributorRoute from './app/router/distributor.route';
+// import { auth } from 'express-oauth2-jwt-bearer';
 
 
 dotenv.config();
@@ -15,17 +17,26 @@ dotenv.config();
 const app: Express = express();
 const server = http.createServer(app);
 app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded());
 
 
 const port = process.env.PORT ?? 8000;
-// app.use(checkJwt);
+// const getJwtCheck = auth({
+//   audience: 'http://localhost:4200',
+//   issuerBaseURL: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/',
+//   tokenSigningAlg: 'RS256'
+// });
+// app.use(getJwtCheck);
 app.use(ErrorHandlerMiddleware.handler);
 
 
 app.use("/api/user", UserRoute);
 app.use("/api/city", CityRoute);
 app.use("/api/product", ProductRoute);
+app.use("/api/order", OrderRoute);
+app.use("/api/merchant", MerchantRoute);
+app.use("/api/distributor", DistributorRoute);
 
 server.listen(port, () => {
   console.log(`⚡️[server]: Server and Socket is running at http://localhost:${port}`)

@@ -9,7 +9,7 @@ import { nameOf } from '../helpers/helper';
 export const insertCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
-    const returnCity = cityRepo.upsert({
+    const returnCity = await cityRepo.upsert({
         State: req.body.State,
         District: req.body.District,
         CityName: req.body.CityName
@@ -21,7 +21,13 @@ export const insertCity = async (req: CustomRequest, res: Response) => {
 export const getAllCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
-    const returnCity = cityRepo.find();
+    const returnCity = await cityRepo.find({
+        relations: {
+            distributor_details: {
+                merchant_details: true
+            }
+        }
+    });
     if (returnCity) {
         return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
     };
@@ -30,7 +36,7 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
 export const updateCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
-    const returnCity = cityRepo.findOne({ where: { CityId: req.query.CityId as any } })
+    const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any } })
     const updatedData = { ...returnCity, ...req.body }
     const update = await cityRepo.update(req.query.CityId as any, updatedData);
     if (update) {

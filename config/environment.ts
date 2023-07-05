@@ -28,6 +28,12 @@ export const development: dbConfigType = {
     password: "7401",
     database: "DMS",
     dialect: "postgres",
+    // host: 'dpg-cii4rjunqql0tc2452dg-a.singapore-postgres.render.com',
+    // username: 'root',
+    // port: 5432,
+    // database: 'postgres',
+    // dialect: 'postgres',
+    // password: 'w3xv0YnWRnwSFUcEICr6Zsp2MPAfoWzY',
     jwtVerification: {
         jwksUri: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/.well-known/jwks.json',
         audience: 'http://localhost:4200',
