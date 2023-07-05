@@ -9,7 +9,7 @@ import { ProductEntity } from '../model/Tables/product.model';
 export const insertProduct = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
-    const returnProduct = productRepo.upsert({
+    const returnProduct = await productRepo.upsert({
         ProductName: req.body.ProductName,
         ProductCategory: req.body.ProductCategory
     }, {
@@ -20,7 +20,7 @@ export const insertProduct = async (req: CustomRequest, res: Response) => {
 export const getProducts = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
-    const returnProduct = productRepo.find();
+    const returnProduct = await productRepo.find();
     if (returnProduct) {
         return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get product successfully!!').send(res);
     };
@@ -29,7 +29,7 @@ export const getProducts = async (req: CustomRequest, res: Response) => {
 export const updateProduct = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
-    const returnProduct = productRepo.findOne({ where: { ProductId: req.query.ProductId as any } })
+    const returnProduct = await productRepo.findOne({ where: { ProductId: req.query.ProductId as any } })
     const updatedData = { ...returnProduct, ...req.body }
     const update = await productRepo.update(req.query.ProductId as any, updatedData);
     if (update) {

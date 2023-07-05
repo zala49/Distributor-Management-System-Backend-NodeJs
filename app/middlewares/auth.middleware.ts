@@ -1,26 +1,12 @@
-import * as jwt from "express-jwt";
-import jwksRsa from "jwks-rsa";
-import * as dotenv from "dotenv";
-import { development, environment } from "../../config/environment";
+// import * as dotenv from "dotenv";
+// import { development, environment } from "../../config/environment";
+// import { auth } from 'express-oauth2-jwt-bearer';
 
-dotenv.config();
+// dotenv.config();
 
-// for client creds
-const getCheckJwt = (env: 'development') => {
-  switch (env) {
-    case 'development': {
-      return jwt.expressjwt({
-        secret: jwksRsa.expressJwtSecret({
-          cache: true,
-          rateLimit: true,
-          jwksRequestsPerMinute: 5,
-          jwksUri: development.jwtVerification.jwksUri
-        }) as jwt.GetVerificationKey,
-        audience: development.jwtVerification.audience,
-        issuer: development.jwtVerification.issuer,
-        algorithms: ['RS256']
-      });
-    }
-  }
-};
-export const checkJwt = getCheckJwt(environment);
+// // for client creds
+//   const getJwtCheck = auth({
+//     audience: 'http://localhost:4200',
+//     issuerBaseURL: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/',
+//     tokenSigningAlg: 'RS256'
+//   });

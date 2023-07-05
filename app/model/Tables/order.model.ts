@@ -11,8 +11,8 @@ export class OrdersEntity extends BaseEntity {
     @Column({type: 'uuid'})
     ProductId: string
 
-    @Column()
-    MerchantDetails: string
+    @Column({type: 'uuid'})
+    MerchantId: string
 
     @Column()
     SalesMen: string
