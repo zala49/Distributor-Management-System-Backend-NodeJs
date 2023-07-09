@@ -8,6 +8,7 @@ import { DistributorEntity } from "./model/Tables/distributor.model";
 import { MerchantEntity } from "./model/Tables/merchant.model";
 import { CityEntity } from "./model/Tables/city.model";
 import { ProductEntity } from "./model/Tables/product.model";
+import { NewStart1688823841660 } from "./migrations/1688823841660-newStart";
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -27,7 +28,7 @@ export const AppDataSource: DataSource = new DataSource({
         CityEntity,
         ProductEntity
     ],
-    migrations: [`${__dirname}/migrations/*.{js,ts}`],
+    migrations: [NewStart1688823841660],
     logging: false,
     synchronize: true
 });
