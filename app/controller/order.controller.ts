@@ -16,8 +16,6 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
     const returnOrders = await orderRepo.upsert({
         OrderDate: req.body.OrderDate,
         ProductId: req.body.ProductId,
-        ProductName: req.body.ProductName,
-        ProductCategory: req.body.ProductCategory,
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: 'Login Person', // Need to add ,
         MerchantId: req.body.MerchantId
@@ -30,20 +28,24 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
 export const getOrders = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
-    const adminListOfOrder = await orderRepo.find(
-        {
-            relations: {}
+    const adminListOfOrder = await orderRepo.find({
+        select: {
+            product_details: { ProductId: true, ProductName: true, ProductCategory: true },
+            OrderId: true, OrderDate: true, ProductQuantity: true, 
+            // salesmen_details: {},
+            merchant_details: {
+                MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
+                MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
+                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true }
+            },
+        },
+        relations: {
+            salesmen_details: true,
+            merchant_details: { distributor_details: true },
+            product_details: true
         }
-    );
-    // const salesmanListOfOrder = await orderRepo.find({
-    //     where: { SalesMen: '' }
-    // });
-    if (USER_ROLES.ADMIN) {
-        return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
-    };
-    // if (USER_ROLES.SALESMEN) {
-    //     return new SuccessResponse(StatusCodes.OK, salesmanListOfOrder, 'Get orders successfully!!').send(res);
-    // };
+    });
+    return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
 };
 
 export const updateOrders = async (req: CustomRequest, res: Response) => {
