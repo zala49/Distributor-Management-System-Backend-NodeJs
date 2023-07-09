@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
-import { SuccessResponse } from '../common/ApiResponse';
+import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { CityEntity } from '../model/Tables/city.model';
@@ -52,7 +52,8 @@ export const deleteCity = async (req: CustomRequest, res: Response) => {
 };
 
 export const getDistributorFromCity = async (req: CustomRequest, res: Response) => {
-    if (!req.query.CityId) throw new BadRequestError("Please provide city!!");
+    if (!req.query.CityId) return new ErrorResponse(StatusCodes.FORBIDDEN, 'Please provide city!!').send(res);
+
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
     const returnDistributor = await distributorRepo.find({ 
@@ -68,7 +69,8 @@ export const getDistributorFromCity = async (req: CustomRequest, res: Response) 
 };
 
 export const getMerchantFromDistributor = async (req: CustomRequest, res: Response) => {
-    if (req.query.distributorId) throw new BadRequestError("Please provide distributor!!");
+    if (req.query.distributorId) return new ErrorResponse(StatusCodes.FORBIDDEN, 'Please provide distributor!!').send(res);
+
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
     const returnDistributor = await merchantRepo.find({
