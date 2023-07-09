@@ -6,24 +6,13 @@ export class UserInfoEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     UserId: string
 
-    @Column({
-        unique: true
-    })
-    Auth0UserId: string
-
     @Column()
     Name: string
 
     @Column()
     Email: string
 
-    @Column()
-    EmailVerified: boolean
-
-    @Column()
-    Nickname: string
-
-    @Column()
+    @Column({ nullable: true })
     Picture: string
 
     @Column({
@@ -31,10 +20,8 @@ export class UserInfoEntity extends BaseEntity {
     })
     Role: string
 
-    @Column({
-        nullable: true
-    })
-    Auth0RoleId: string
+    @Column()
+    Password: string
 
     @CreateDateColumn()
     CreatedAt: Date
