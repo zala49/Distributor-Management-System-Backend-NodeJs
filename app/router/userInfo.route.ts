@@ -5,7 +5,10 @@ import * as UserController from '../controller/userInfo.controller';
 let router = express.Router();
 
 router.get("/getusers", runAsyncWrapper(UserController.getUsers));
+router.post("/signUp", runAsyncWrapper(UserController.signUp));
+router.post("/login", runAsyncWrapper(UserController.login));
+
+
 router.get("/me", runAsyncWrapper(UserController.loginUserDetails));
-router.get("/getAllRoles", runAsyncWrapper(UserController.getAllRoles));
 
 export default router;

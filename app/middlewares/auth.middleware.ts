@@ -1,12 +1,16 @@
-// import * as dotenv from "dotenv";
-// import { development, environment } from "../../config/environment";
-// import { auth } from 'express-oauth2-jwt-bearer';
+import { development } from "../../config/environment";
+import jwt from 'jsonwebtoken';
 
-// dotenv.config();
-
-// // for client creds
-//   const getJwtCheck = auth({
-//     audience: 'http://localhost:4200',
-//     issuerBaseURL: 'https://dev-2x5ceivn4roumjbl.us.auth0.com/',
-//     tokenSigningAlg: 'RS256'
-//   });
+export const checkJWT = (req: any, res: any, next: any) => {
+  try {
+    if (req.headers.authorization != '') {
+      const token = req.headers.authorization.split(" ")[1];
+      const decode = jwt.verify(token, development.managementApiCred.client_secret);
+      req.userData = decode;
+    }
+    next();
+  } catch (error) {
+    res.send(error);
+    next();
+  }
+};

@@ -7,7 +7,6 @@ import { StatusCodes } from "http-status-codes";
 import { nameOf } from "../helpers/helper";
 import { USER_ROLES } from "../../config/constants";
 import { BadRequestError } from "../common/ApiErrorResponse";
-import { AuthTokenService } from "../services/authToken.service";
 
 export const insertOrder = async (req: CustomRequest, res: Response) => {
     // const userLoginInfo = await AuthTokenService.getUserInfoDbByAuth0UserId(req.auth?.sub!);
