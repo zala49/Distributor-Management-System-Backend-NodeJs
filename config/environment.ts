@@ -25,7 +25,7 @@ export const development: dbConfigType = {
     host: "localhost",
     username: "postgres",
     port: 5432,
-    password: "7401",
+    password: "Bhavesh@1599",
     database: "DMS",
     dialect: "postgres",
     // host: 'dpg-cii4rjunqql0tc2452dg-a.singapore-postgres.render.com',

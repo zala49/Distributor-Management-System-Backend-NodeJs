@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
-import { SuccessResponse } from '../common/ApiResponse';
+import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { nameOf } from '../helpers/helper';
@@ -25,6 +25,15 @@ export const getProducts = async (req: CustomRequest, res: Response) => {
         return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get product successfully!!').send(res);
     };
 };
+
+export const getProductById = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const productRepo = database.getRepository(ProductEntity);
+    const returnProduct = await productRepo.findOne({ where: { ProductId: req.query.ProductId as any }});
+    if (returnProduct) {
+      return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get Product successfully!!').send(res);
+  } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No product found!!').send(res);
+  };
 
 export const updateProduct = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();

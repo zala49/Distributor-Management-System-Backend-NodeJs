@@ -11,28 +11,28 @@ export class MerchantEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
     MerchantId: string
 
-    @Column({ type: 'uuid' })
+    @Column({type: 'uuid'})
     DistributorId: string
 
-    @Column({ type: 'uuid' })
+    @Column({type: 'uuid'})
     CityId: string
 
     @Column()
     MerchantName: string
 
-    @Column({ nullable: true })
+    @Column()
     MerchantGSTNumber: string
 
-    @Column({ nullable: true })
+    @Column()
     MerchantEmail: string
 
-    @Column({ nullable: true })
+    @Column()
     MerchantTelNo: string
 
-    @Column({ nullable: true })
+    @Column()
     MerchantAddress: string
 
-    @Column({ nullable: true })
+    @Column()
     MerchantCity: string
 
     @CreateDateColumn()
@@ -41,7 +41,7 @@ export class MerchantEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @ManyToOne(() => DistributorEntity)
+    @ManyToOne( () => DistributorEntity)
     @JoinColumn([
         {
             name: nameOf<MerchantEntity>('DistributorId'),

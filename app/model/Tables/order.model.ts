@@ -6,7 +6,7 @@ import { SalesmenEntity } from "./salesment.model";
 import { MerchantEntity } from "./merchant.model";
 
 @Entity(Table_Name.orders)
-@Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesmenId'), nameOf<OrdersEntity>('ProductQuantity'), nameOf<OrdersEntity>('MerchantId')])
+@Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')])
 export class OrdersEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     OrderId: string
@@ -17,8 +17,17 @@ export class OrdersEntity extends BaseEntity {
     @Column({type: 'uuid'})
     MerchantId: string
 
-    @Column({type: 'uuid'})
+    @Column({type: 'uuid', nullable: true })
     SalesmenId: string
+
+    @Column()
+    SalesMen: string
+
+    @Column()
+    ProductName: string
+
+    @Column()
+    ProductCategory: string
 
     @Column()
     ProductQuantity: string

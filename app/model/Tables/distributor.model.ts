@@ -18,33 +18,17 @@ export class DistributorEntity extends BaseModel {
     @Column()
     DistributorName: string
 
-    @Column({nullable: true})
+    @Column()
     DistributorEmail: string
 
-    
-    @Column({nullable: true})
+    @Column()
     DistributorTelNo: string
-    
-    @Column({nullable: true})
+
+    @Column()
     DistributorAddress: string
-    
-    @Column({nullable: true})
-    DistributorState: string
 
-    @Column({nullable: true})
-    DistributorPinCode: string
-
-    @Column({nullable: true})
+    @Column()
     DistributorCity: string
-
-    @Column({nullable: true})
-    IFSCcode: string
-
-    @Column({nullable: true})
-    CheckNumber1: string
-
-    @Column({nullable: true})
-    CheckNumber2: string
 
     @CreateDateColumn()
     CreatedAt: Date

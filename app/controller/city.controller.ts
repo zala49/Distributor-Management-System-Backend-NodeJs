@@ -31,6 +31,15 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
     };
 };
 
+export const getCityById = async (req: CustomRequest, res: Response) => {
+  const database = await connectToDatabase();
+  const cityRepo = database.getRepository(CityEntity);
+  const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any }});
+  if (returnCity) {
+    return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
+} else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No city found!!').send(res);
+};
+
 export const updateCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
@@ -52,8 +61,7 @@ export const deleteCity = async (req: CustomRequest, res: Response) => {
 };
 
 export const getDistributorFromCity = async (req: CustomRequest, res: Response) => {
-    if (!req.query.CityId) return new ErrorResponse(StatusCodes.FORBIDDEN, 'Please provide city!!').send(res);
-
+    if (!req.query.CityId) throw new BadRequestError("Please provide city!!");
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
     const returnDistributor = await distributorRepo.find({ 
@@ -69,8 +77,7 @@ export const getDistributorFromCity = async (req: CustomRequest, res: Response) 
 };
 
 export const getMerchantFromDistributor = async (req: CustomRequest, res: Response) => {
-    if (req.query.distributorId) return new ErrorResponse(StatusCodes.FORBIDDEN, 'Please provide distributor!!').send(res);
-
+    if (req.query.distributorId) throw new BadRequestError("Please provide distributor!!");
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
     const returnDistributor = await merchantRepo.find({

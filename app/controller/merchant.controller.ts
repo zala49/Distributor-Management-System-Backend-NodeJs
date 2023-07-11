@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
-import { SuccessResponse } from '../common/ApiResponse';
+import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { nameOf } from '../helpers/helper';
@@ -33,6 +33,16 @@ export const getAllMerchant = async (req: CustomRequest, res: Response) => {
         return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get merchant successfully!!').send(res);
     };
 };
+
+
+export const getMerchantById = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const merchanrRepo = database.getRepository(MerchantEntity);
+    const returnMerchant = await merchanrRepo.findOne({ where: { MerchantId: req.query.MerchantId as any }});
+    if (returnMerchant) {
+      return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get Merchant successfully!!').send(res);
+  } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No Merchant found!!').send(res);
+  };
 
 export const updateMerchant = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
