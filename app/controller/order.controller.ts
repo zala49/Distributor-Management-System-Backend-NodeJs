@@ -2,7 +2,7 @@ import { CustomRequest } from "../interfaces/request.interface";
 import { Response } from 'express';
 import { connectToDatabase } from "../utils/DatabaseUtils";
 import { OrdersEntity } from "../model/Tables/order.model";
-import { SuccessResponse } from "../common/ApiResponse";
+import { ErrorResponse, SuccessResponse } from "../common/ApiResponse";
 import { StatusCodes } from "http-status-codes";
 import { nameOf } from "../helpers/helper";
 import { USER_ROLES } from "../../config/constants";
@@ -45,6 +45,32 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
         }
     });
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
+};
+
+export const getOrderById = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const orderRepo = database.getRepository(OrdersEntity);
+    const adminListOfOrder = await orderRepo.findOne({
+        select: {
+            product_details: { ProductId: true, ProductName: true, ProductCategory: true },
+            OrderId: true, OrderDate: true, ProductQuantity: true, 
+            merchant_details: {
+                MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
+                MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
+                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true }
+            },
+        },
+        relations: {
+            salesmen_details: true,
+            merchant_details: { distributor_details: true },
+            product_details: true
+        },
+        where: {OrderId: req.query.OrderId as any}
+    });
+    if(adminListOfOrder){
+        return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
+    } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No order found!!').send(res);
+
 };
 
 export const updateOrders = async (req: CustomRequest, res: Response) => {

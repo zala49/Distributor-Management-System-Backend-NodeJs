@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
-import { SuccessResponse } from '../common/ApiResponse';
+import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { CityEntity } from '../model/Tables/city.model';
@@ -29,6 +29,15 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
     if (returnCity) {
         return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
     };
+};
+
+export const getCityById = async (req: CustomRequest, res: Response) => {
+  const database = await connectToDatabase();
+  const cityRepo = database.getRepository(CityEntity);
+  const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any }});
+  if (returnCity) {
+    return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
+} else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No city found!!').send(res);
 };
 
 export const updateCity = async (req: CustomRequest, res: Response) => {
