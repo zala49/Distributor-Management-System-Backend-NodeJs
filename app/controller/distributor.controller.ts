@@ -12,10 +12,10 @@ export const insertDistributor = async (req: CustomRequest, res: Response) => {
     const returnDistributor = await distributorRepo.upsert({
         CityId: req.body.CityId,
         DistributorName: req.body.DistributorName,
-        DistributorEmail: req.body.DistributorEmail,
-        DistributorTelNo: req.body.DistributorTelNo,
-        DistributorAddress: req.body.DistributorAddress,
-        DistributorCity: req.body.DistributorCity
+        DistributorEmail: req.body?.DistributorEmail,
+        DistributorTelNo: req.body?.DistributorTelNo,
+        DistributorAddress: req.body?.DistributorAddress,
+        DistributorCity: req.body?.DistributorCity
     }, {
         conflictPaths: [nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')]
     });

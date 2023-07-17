@@ -1,7 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
 import { BadRequestError, NotFoundError } from '../common/ApiErrorResponse';
-// import { AuthTokenService } from '../services/authToken.service';
 import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
@@ -9,9 +8,30 @@ import { UserInfoEntity } from '../model/Tables/userInfo.model';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import { development } from '../../config/environment';
+import { USER_ROLES } from '../../config/constants';
 
 export const loginUserDetails = async (req: CustomRequest, res: express.Response) => {
-    return new SuccessResponse(StatusCodes.OK, 'Fetch login user details!').send(res);
+    const database = await connectToDatabase();
+    const userRepo = database.getRepository(UserInfoEntity);
+    const loginPerson = await userRepo.findOne({ where: {
+        Name: req.body.Name,
+        Email: req.body.Email
+    }})
+    return new SuccessResponse(StatusCodes.OK, loginPerson, 'Fetch login user details!').send(res);
+};
+
+export const changeRole = async (req: express.Request, res: express.Response) => {
+    const database = await connectToDatabase();
+    const userRepo = database.getRepository(UserInfoEntity);
+    const userData = await userRepo.findOne({ where: { UserId: req.query.UserId as any } });
+    if (userData && req.body.Role == USER_ROLES.SALESMEN) {
+        userData.Role = USER_ROLES.SALESMEN
+        userData.save();
+        const updatedUser = await userRepo.findOne({ where: { UserId: req.query.UserId as any } });
+        return new SuccessResponse(StatusCodes.OK, updatedUser, 'User Role change successfully!!').send(res)
+    } else {
+        return new ErrorResponse(StatusCodes.CONFLICT, 'Invalid Role').send(res);
+    }
 };
 
 export const getUsers = async (req: CustomRequest, res: Response) => {
@@ -20,16 +40,16 @@ export const getUsers = async (req: CustomRequest, res: Response) => {
     const userData = await userRepo.find();
     if (userData.length) {
         return new SuccessResponse(StatusCodes.OK, userData, 'User get successfully!!').send(res)
-    } else throw new BadRequestError("No User found!!");
+    } else return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(res);
 };
 
 export const getUsersById = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const userRepo = database.getRepository(UserInfoEntity);
-    const userData = await userRepo.findOne({where : {UserId: req.query.UserId as any}});
+    const userData = await userRepo.findOne({ where: { UserId: req.query.UserId as any } });
     if (userData) {
         return new SuccessResponse(StatusCodes.OK, userData, 'User get successfully!!').send(res)
-    } else return new ErrorResponse(StatusCodes.NOT_FOUND,"No User found!!").send(res);
+    } else return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(res);
 };
 
 export const signUp = async (req: CustomRequest, res: Response) => {

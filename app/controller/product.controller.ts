@@ -5,17 +5,30 @@ import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { nameOf } from '../helpers/helper';
 import { ProductEntity } from '../model/Tables/product.model';
+import { ProductCategoryEntity } from '../model/Tables/productCategory.model';
 
 export const insertProduct = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
     const returnProduct = await productRepo.upsert({
         ProductName: req.body.ProductName,
-        ProductCategory: req.body.ProductCategory
     }, {
-        conflictPaths: [nameOf<ProductEntity>('ProductName'), nameOf<ProductEntity>('ProductCategory')]
+        conflictPaths: [nameOf<ProductEntity>('ProductId')]
     });
-    return new SuccessResponse(StatusCodes.OK, returnProduct, 'Added product successfully!!').send(res);
+    return new SuccessResponse(StatusCodes.OK, returnProduct, 'Added product name successfully!!').send(res);
+};
+
+export const insertProductCategory = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const productCatRepo = database.getRepository(ProductCategoryEntity);
+    if(!req.body.ProductId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide Product!!!');
+    const returnProductCat = await productCatRepo.upsert({
+        ProductCategory: req.body.ProductCategory,
+        ProductId: req.body.ProductId
+    }, {
+        conflictPaths: [nameOf<ProductCategoryEntity>('ProductId'), nameOf<ProductCategoryEntity>('ProductCategory')]
+    });
+    return new SuccessResponse(StatusCodes.OK, returnProductCat, 'Added product category successfully!!').send(res);
 };
 export const getProducts = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
@@ -23,6 +36,16 @@ export const getProducts = async (req: CustomRequest, res: Response) => {
     const returnProduct = await productRepo.find();
     if (returnProduct) {
         return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get product successfully!!').send(res);
+    };
+};
+
+export const getProductCategoryByProductId = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const productCategoryRepo = database.getRepository(ProductCategoryEntity);
+    if(!req.query.ProductId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide productId!!');
+    const returnProductCategory = await productCategoryRepo.find({ where: { ProductId: req.query.ProductId as any}});
+    if (returnProductCategory) {
+        return new SuccessResponse(StatusCodes.OK, returnProductCategory, 'Get product category successfully!!').send(res);
     };
 };
 
@@ -46,6 +69,18 @@ export const updateProduct = async (req: CustomRequest, res: Response) => {
     };
 };
 
+export const updateProductCategory = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const productCatRepo = database.getRepository(ProductCategoryEntity);
+    const returnProductCat = await productCatRepo.findOne({ where: { ProductId: req.query.ProductId as any } })
+    if(!req.query.ProductCategoryId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'ProductCategoryId Not Found!!');
+    const updatedData = { ...returnProductCat, ...req.body }
+    const update = await productCatRepo.update(req.query.ProductCategoryId as any, updatedData);
+    if (update) {
+        return new SuccessResponse(StatusCodes.OK, updatedData, 'Updated product category successfully!!').send(res);
+    };
+}
+
 export const deleteProduct = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
@@ -54,3 +89,13 @@ export const deleteProduct = async (req: CustomRequest, res: Response) => {
         return new SuccessResponse(StatusCodes.OK, {}, 'Product deleted successfully!!').send(res);
     };
 };
+
+export const deleteProductCat = async (req: CustomRequest, res: Response) => {
+    const database = await connectToDatabase();
+    const productCatRepo = database.getRepository(ProductCategoryEntity);
+    if(!req.query.ProductCategoryId) { return new ErrorResponse(StatusCodes.NOT_FOUND, 'ProductCategoryId Not Found!!')};
+    const returnProduct = await productCatRepo.delete({ ProductCategoryId: req.query.ProductCategoryId as any });
+    if (returnProduct) {
+        return new SuccessResponse(StatusCodes.OK, {}, 'Product category deleted successfully!!').send(res);
+    };
+}

@@ -5,5 +5,6 @@ export enum Table_Name {
     'distributor' = 'distibutor',
     'merchant' = 'merchant',
     'orders' = 'orders',
-    'products' = 'products'
+    'products' = 'products',
+    'products_Categorys' = 'products_Categorys'
 };

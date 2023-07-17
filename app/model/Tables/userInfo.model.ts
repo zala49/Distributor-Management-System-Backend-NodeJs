@@ -9,7 +9,7 @@ export class UserInfoEntity extends BaseEntity {
     @Column()
     Name: string
 
-    @Column()
+    @Column({nullable: true})
     Email: string
 
     @Column({ nullable: true })

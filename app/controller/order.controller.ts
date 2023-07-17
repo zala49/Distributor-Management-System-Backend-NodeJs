@@ -9,14 +9,15 @@ import { USER_ROLES } from "../../config/constants";
 import { BadRequestError } from "../common/ApiErrorResponse";
 
 export const insertOrder = async (req: CustomRequest, res: Response) => {
-    // const userLoginInfo = await AuthTokenService.getUserInfoDbByAuth0UserId(req.auth?.sub!);
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
     const returnOrders = await orderRepo.upsert({
         OrderDate: req.body.OrderDate,
         ProductId: req.body.ProductId,
+        ProductCategoryId: req.body?.ProductCategoryId,
         ProductQuantity: req.body.ProductQuantity,
-        SalesMen: 'Login Person', // Need to add ,
+        SalesMen: req.body.SalesMen,
+        SalesmenId: req.body?.SalesManId,
         MerchantId: req.body.MerchantId
     }, {
         conflictPaths: [nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')]
@@ -29,9 +30,8 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.find({
         select: {
-            product_details: { ProductId: true, ProductName: true, ProductCategory: true },
+            product_details: { ProductId: true, ProductName: true },
             OrderId: true, OrderDate: true, ProductQuantity: true, 
-            // salesmen_details: {},
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
                 MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
@@ -41,7 +41,7 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             merchant_details: { distributor_details: true },
-            product_details: true
+            product_details: { product_category: true }
         }
     });
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
@@ -52,7 +52,7 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.findOne({
         select: {
-            product_details: { ProductId: true, ProductName: true, ProductCategory: true },
+            product_details: { ProductId: true, ProductName: true },
             OrderId: true, OrderDate: true, ProductQuantity: true, 
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
@@ -63,7 +63,7 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             merchant_details: { distributor_details: true },
-            product_details: true
+            product_details: { product_category: true }
         },
         where: {OrderId: req.query.OrderId as any}
     });
