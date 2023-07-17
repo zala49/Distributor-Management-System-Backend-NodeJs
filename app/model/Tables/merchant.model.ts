@@ -20,19 +20,19 @@ export class MerchantEntity extends BaseModel {
     @Column()
     MerchantName: string
 
-    @Column()
+    @Column({nullable: true})
     MerchantGSTNumber: string
 
-    @Column()
+    @Column({nullable: true})
     MerchantEmail: string
 
-    @Column()
+    @Column({nullable: true})
     MerchantTelNo: string
 
-    @Column()
+    @Column({nullable: true})
     MerchantAddress: string
 
-    @Column()
+    @Column({nullable: true})
     MerchantCity: string
 
     @CreateDateColumn()

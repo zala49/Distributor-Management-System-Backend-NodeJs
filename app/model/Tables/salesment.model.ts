@@ -19,10 +19,10 @@ export class SalesmenEntity extends BaseModel {
     @Column()
     SalesManTelNo: string
 
-    @Column()
+    @Column({nullable: true})
     SalesManAddress: string
 
-    @Column()
+    @Column({nullable: true})
     SalesManCity: string
 
     @CreateDateColumn()

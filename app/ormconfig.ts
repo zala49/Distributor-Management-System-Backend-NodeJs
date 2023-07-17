@@ -7,6 +7,7 @@ import { MerchantEntity } from "./model/Tables/merchant.model";
 import { CityEntity } from "./model/Tables/city.model";
 import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
+import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -23,7 +24,8 @@ export const AppDataSource: DataSource = new DataSource({
         DistributorEntity,
         MerchantEntity,
         CityEntity,
-        ProductEntity
+        ProductEntity,
+        ProductCategoryEntity
     ],
     migrations: [''],
     logging: false,

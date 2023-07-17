@@ -13,11 +13,11 @@ export const insertMerchant = async (req: CustomRequest, res: Response) => {
         CityId: req.body.CityId,
         DistributorId: req.body.DistributorId,
         MerchantName: req.body.MerchantName,
-        MerchantGSTNumber: req.body.MerchantGSTNumber,
-        MerchantEmail: req.body.MerchantEmail,
-        MerchantTelNo: req.body.MerchantTelNo,
-        MerchantAddress: req.body.MerchantAddress,
-        MerchantCity: req.body.MerchantCity
+        MerchantGSTNumber: req.body?.MerchantGSTNumber,
+        MerchantEmail: req.body?.MerchantEmail,
+        MerchantTelNo: req.body?.MerchantTelNo,
+        MerchantAddress: req.body?.MerchantAddress,
+        MerchantCity: req.body?.MerchantCity
     }, {
         conflictPaths: [nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantId')]
     });

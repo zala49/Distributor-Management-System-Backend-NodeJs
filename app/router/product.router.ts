@@ -10,4 +10,11 @@ router.post("/insertProduct", runAsyncWrapper(ProductController.insertProduct));
 router.put("/updateProduct", runAsyncWrapper(ProductController.updateProduct));
 router.delete("/deleteProduct", runAsyncWrapper(ProductController.deleteProduct));
 
+
+router.get("/getProductCategoryById", runAsyncWrapper(ProductController.getProductCategoryByProductId));
+router.post("/insertProductCategory", runAsyncWrapper(ProductController.insertProductCategory));
+router.put("/updateProductCategory", runAsyncWrapper(ProductController.updateProductCategory));
+router.delete("/deleteProductCategory", runAsyncWrapper(ProductController.deleteProductCat));
+
+
 export default router;
