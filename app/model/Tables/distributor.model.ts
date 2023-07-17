@@ -30,6 +30,18 @@ export class DistributorEntity extends BaseModel {
     @Column({nullable: true})
     DistributorCity: string
 
+    @Column({nullable: true})
+    IFSCCode: string
+
+    @Column({ nullable: true})
+    BankName: string
+
+    @Column({nullable: true})
+    ChequeNumber1: string
+
+    @Column({nullable: true})
+    ChequeNumber2: string
+    
     @CreateDateColumn()
     CreatedAt: Date
 

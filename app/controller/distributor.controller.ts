@@ -15,7 +15,11 @@ export const insertDistributor = async (req: CustomRequest, res: Response) => {
         DistributorEmail: req.body?.DistributorEmail,
         DistributorTelNo: req.body?.DistributorTelNo,
         DistributorAddress: req.body?.DistributorAddress,
-        DistributorCity: req.body?.DistributorCity
+        DistributorCity: req.body?.DistributorCity,
+        BankName: req.body?.BankeName,
+        IFSCCode: req.body?.IFSCCode,
+        ChequeNumber1: req.body?.ChequeNumber1,
+        ChequeNumber2: req.body.ChequeNumber2
     }, {
         conflictPaths: [nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')]
     });

@@ -57,7 +57,7 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
                 MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
-                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true }
+                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true, BankName: true, ChequeNumber1: true, ChequeNumber2: true, IFSCCode: true }
             },
         },
         relations: {
