@@ -9,6 +9,7 @@ import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
 import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
 import { NewStart1688823841660 } from "./migrations/1688823841660-newStart";
+import { Asdfasfdas1689784220999 } from "./migrations/1689784220999-asdfasfdas";
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -18,6 +19,7 @@ export const AppDataSource: DataSource = new DataSource({
     password: development.password,
     database: development.database,
     poolSize: 5,
+    ssl: true,
     entities: [
         UserInfoEntity,
         OrdersEntity,
@@ -28,6 +30,6 @@ export const AppDataSource: DataSource = new DataSource({
         ProductEntity,
         ProductCategoryEntity
     ],
-    migrations: [NewStart1688823841660],
+    migrations: [Asdfasfdas1689784220999],
     synchronize: false
 });
