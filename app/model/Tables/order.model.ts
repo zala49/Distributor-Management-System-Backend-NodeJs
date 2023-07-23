@@ -32,6 +32,15 @@ export class OrdersEntity extends BaseEntity {
     @Column()
     OrderDate: Date
 
+    @Column({nullable: true})
+    Packing: string
+
+    @Column({nullable: true})
+    NOS: string
+
+    @Column({nullable: true})
+    Scheme: string
+
     @Column({default: 'Pending'})
     Status: string
     
