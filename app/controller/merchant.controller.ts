@@ -19,7 +19,7 @@ export const insertMerchant = async (req: CustomRequest, res: Response) => {
         MerchantAddress: req.body?.MerchantAddress,
         MerchantCity: req.body?.MerchantCity
     }, {
-        conflictPaths: [nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantId')]
+        conflictPaths: [nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantName')]
     });
     return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Added merchant successfully!!').send(res);
 };

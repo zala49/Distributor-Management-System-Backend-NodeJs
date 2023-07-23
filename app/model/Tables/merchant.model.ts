@@ -5,7 +5,7 @@ import { nameOf } from "../../helpers/helper";
 import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.merchant)
-@Unique([nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantId')])
+@Unique([nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantName')])
 
 export class MerchantEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
