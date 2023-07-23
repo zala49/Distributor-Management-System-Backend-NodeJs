@@ -33,7 +33,7 @@ export const insertProductCategory = async (req: CustomRequest, res: Response) =
 export const getProducts = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
-    const returnProduct = await productRepo.find();
+    const returnProduct = await productRepo.find({ relations: { product_category: true } });
     if (returnProduct) {
         return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get product successfully!!').send(res);
     };
@@ -43,7 +43,7 @@ export const getProductCategoryByProductId = async (req: CustomRequest, res: Res
     const database = await connectToDatabase();
     const productCategoryRepo = database.getRepository(ProductCategoryEntity);
     if(!req.query.ProductId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide productId!!');
-    const returnProductCategory = await productCategoryRepo.find({ where: { ProductId: req.query.ProductId as any}});
+    const returnProductCategory = await productCategoryRepo.find({ where: { ProductId: req.query.ProductId as any}, relations: { product_details: true }});
     if (returnProductCategory) {
         return new SuccessResponse(StatusCodes.OK, returnProductCategory, 'Get product category successfully!!').send(res);
     };
@@ -52,7 +52,7 @@ export const getProductCategoryByProductId = async (req: CustomRequest, res: Res
 export const getProductById = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productRepo = database.getRepository(ProductEntity);
-    const returnProduct = await productRepo.findOne({ where: { ProductId: req.query.ProductId as any }});
+    const returnProduct = await productRepo.findOne({ where: { ProductId: req.query.ProductId as any }, relations: { product_category: true }});
     if (returnProduct) {
       return new SuccessResponse(StatusCodes.OK, returnProduct, 'Get Product successfully!!').send(res);
   } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No product found!!').send(res);
