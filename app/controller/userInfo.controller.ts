@@ -24,8 +24,8 @@ export const changeRole = async (req: express.Request, res: express.Response) =>
     const database = await connectToDatabase();
     const userRepo = database.getRepository(UserInfoEntity);
     const userData = await userRepo.findOne({ where: { UserId: req.query.UserId as any } });
-    if (userData && req.body.Role == USER_ROLES.SALESMEN) {
-        userData.Role = USER_ROLES.SALESMEN
+    if (userData) {
+        userData.Role = req.body.Role
         userData.save();
         const updatedUser = await userRepo.findOne({ where: { UserId: req.query.UserId as any } });
         return new SuccessResponse(StatusCodes.OK, updatedUser, 'User Role change successfully!!').send(res)
