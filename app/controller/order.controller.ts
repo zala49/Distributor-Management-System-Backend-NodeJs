@@ -18,7 +18,10 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: req.body.SalesMen,
         SalesmenId: req.body?.SalesManId,
-        MerchantId: req.body.MerchantId
+        MerchantId: req.body.MerchantId,
+        Packing: req.body?.Packing,
+        NOS: req.body?.Nos,
+        Scheme: req.body?.Scheme
     }, {
         conflictPaths: [nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')]
     });
@@ -31,7 +34,7 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
     const adminListOfOrder = await orderRepo.find({
         select: {
             product_details: { ProductId: true, ProductName: true },
-            OrderId: true, OrderDate: true, ProductQuantity: true,
+            // OrderId: true, OrderDate: true, ProductQuantity: true,
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
                 MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
