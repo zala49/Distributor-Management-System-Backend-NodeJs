@@ -33,7 +33,6 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.find({
         select: {
-            product_details: { ProductId: true, ProductName: true },
             // OrderId: true, OrderDate: true, ProductQuantity: true,
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
@@ -44,7 +43,7 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             merchant_details: { distributor_details: true },
-            product_details: { product_category: true }
+            product_cat_details: { product_details: true }
         }
     });
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
@@ -55,7 +54,6 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const data = await orderRepo.find({ 
         select: {
-            product_details: { ProductId: true, ProductName: true },
             OrderId: true, OrderDate: true, ProductQuantity: true,
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
@@ -66,7 +64,7 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             merchant_details: { distributor_details: true },
-            product_details: { product_category: true }
+            product_cat_details: { product_details: true }
         },
         where: { SalesmenId: req.query.SalesManId as any } })
     return new SuccessResponse(StatusCodes.OK, data, 'Get orders successfully!!').send(res);
@@ -78,7 +76,6 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.findOne({
         select: {
-            product_details: { ProductId: true, ProductName: true },
             OrderId: true, OrderDate: true, ProductQuantity: true,
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
@@ -89,7 +86,7 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             merchant_details: { distributor_details: true },
-            product_details: { product_category: true }
+            product_cat_details: { product_details: true }
         },
         where: { OrderId: req.query.OrderId as any }
     });
