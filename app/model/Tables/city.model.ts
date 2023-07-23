@@ -5,7 +5,7 @@ import { nameOf } from "../../helpers/helper";
 import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.citys)
-@Unique([nameOf<CityEntity>('State'), nameOf<CityEntity>('District'), nameOf<CityEntity>('CityName')])
+@Unique([nameOf<CityEntity>('State'), nameOf<CityEntity>('CityName'), nameOf<CityEntity>('CityArea')])
 
 export class CityEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
@@ -15,7 +15,7 @@ export class CityEntity extends BaseModel {
     State: string
 
     @Column()
-    District: string
+    CityArea: string
 
     @Column()
     CityName: string

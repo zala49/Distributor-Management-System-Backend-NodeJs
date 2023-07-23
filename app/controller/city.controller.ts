@@ -12,14 +12,23 @@ import { BadRequestError } from '../common/ApiErrorResponse';
 export const insertCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
-    const returnCity = await cityRepo.upsert({
-        State: req.body.State,
-        District: req.body.District,
-        CityName: req.body.CityName
-    }, {
-        conflictPaths: [nameOf<CityEntity>('State'), nameOf<CityEntity>('District'), nameOf<CityEntity>('CityName')]
-    });
-    return new SuccessResponse(StatusCodes.OK, returnCity, 'Added city successfully!!').send(res);
+    for (const data of ([req.body.CityArea].flat())) {
+        const returnCity = await cityRepo.upsert({
+            State: req.body.State,
+            CityName: req.body.CityName,
+            CityArea: data
+        }, {
+            conflictPaths: [nameOf<CityEntity>('State'), nameOf<CityEntity>('CityArea'), nameOf<CityEntity>('CityName')]
+        })
+    }
+    // const returnCity = await cityRepo.upsert({
+    //     State: req.body.State,
+    //     CityName: req.body.CityName,
+    //     CityArea: req.body.CityArea
+    // }, {
+    //     conflictPaths: [nameOf<CityEntity>('State'), nameOf<CityEntity>('CityArea'), nameOf<CityEntity>('CityName')]
+    // });
+    return new SuccessResponse(StatusCodes.OK, 'Added city successfully!!').send(res);
 };
 
 export const getAllCity = async (req: CustomRequest, res: Response) => {
@@ -32,12 +41,12 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
 };
 
 export const getCityById = async (req: CustomRequest, res: Response) => {
-  const database = await connectToDatabase();
-  const cityRepo = database.getRepository(CityEntity);
-  const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any }});
-  if (returnCity) {
-    return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
-} else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No city found!!').send(res);
+    const database = await connectToDatabase();
+    const cityRepo = database.getRepository(CityEntity);
+    const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any } });
+    if (returnCity) {
+        return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
+    } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No city found!!').send(res);
 };
 
 export const updateCity = async (req: CustomRequest, res: Response) => {
@@ -64,12 +73,12 @@ export const getDistributorFromCity = async (req: CustomRequest, res: Response) 
     if (!req.query.CityId) throw new BadRequestError("Please provide city!!");
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
-    const returnDistributor = await distributorRepo.find({ 
+    const returnDistributor = await distributorRepo.find({
         where: { CityId: req.query.CityId as any },
         select: {
-            DistributorName: true, DistributorCity: true, DistributorEmail: true, 
-            DistributorAddress: true, DistributorTelNo: true,DistributorId: true,
-            city_details: { CityId: true, CityName: true, District: true, State: true }
+            DistributorName: true, DistributorCity: true, DistributorEmail: true,
+            DistributorAddress: true, DistributorTelNo: true, DistributorId: true,
+            city_details: { CityId: true, CityName: true, CityArea: true, State: true }
         },
         relations: { city_details: true }
     });
