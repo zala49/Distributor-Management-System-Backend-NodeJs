@@ -27,7 +27,7 @@ export const getAllMerchant = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
     const returnMerchant = await merchantRepo.find({
-        relations: { distributor_details: true }
+        relations: { distributor_details:  {city_details:true}}
     });
     if (returnMerchant) {
         return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get merchant successfully!!').send(res);

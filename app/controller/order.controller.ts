@@ -20,7 +20,7 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         SalesmenId: req.body?.SalesManId,
         MerchantId: req.body.MerchantId,
         Packing: req.body?.Packing,
-        NOS: req.body?.Nos,
+        NOS: req.body?.NOS,
         Scheme: req.body?.Scheme
     }, {
         conflictPaths: [nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')]
@@ -76,7 +76,7 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.findOne({
         select: {
-            OrderId: true, OrderDate: true, ProductQuantity: true,
+            // OrderId: true, OrderDate: true, ProductQuantity: true,NOS:true,Scheme:true,Packing:true,
             merchant_details: {
                 MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
                 MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,

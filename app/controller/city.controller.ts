@@ -10,6 +10,7 @@ import { MerchantEntity } from '../model/Tables/merchant.model';
 import { BadRequestError } from '../common/ApiErrorResponse';
 
 export const insertCity = async (req: CustomRequest, res: Response) => {
+    console.log("city req.body",req.body);
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
     for (const data of ([req.body.CityArea].flat())) {

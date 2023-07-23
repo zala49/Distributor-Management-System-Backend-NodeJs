@@ -72,7 +72,7 @@ export const updateProduct = async (req: CustomRequest, res: Response) => {
 export const updateProductCategory = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const productCatRepo = database.getRepository(ProductCategoryEntity);
-    const returnProductCat = await productCatRepo.findOne({ where: { ProductId: req.query.ProductId as any } })
+    const returnProductCat = await productCatRepo.findOne({ where: { ProductId: req.body.ProductId as any } })
     if(!req.query.ProductCategoryId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'ProductCategoryId Not Found!!');
     const updatedData = { ...returnProductCat, ...req.body }
     const update = await productCatRepo.update(req.query.ProductCategoryId as any, updatedData);

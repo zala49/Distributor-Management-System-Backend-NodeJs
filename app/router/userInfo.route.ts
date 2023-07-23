@@ -12,6 +12,6 @@ router.post("/assignRole", runAsyncWrapper(UserController.changeRole));
 
 
 
-router.get("/me", runAsyncWrapper(UserController.loginUserDetails));
+router.post("/me", runAsyncWrapper(UserController.loginUserDetails));
 
 export default router;

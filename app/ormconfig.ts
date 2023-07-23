@@ -8,9 +8,9 @@ import { CityEntity } from "./model/Tables/city.model";
 import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
 import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
-import { NewStart1688823841660 } from "./migrations/1688823841660-newStart";
-import { Asdfasfdas1689784220999 } from "./migrations/1689784220999-asdfasfdas";
-
+import { Newww1690106380230 } from "./migrations/1690106380230-newww";
+import { Hajsbdjbafjks1690111519182 } from "./migrations/1690111519182-hajsbdjbafjks";
+import { Jkbajkdsjkfnajsd1690112970257 } from "./migrations/1690112970257-jkbajkdsjkfnajsd";
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
     host: development.host,
@@ -30,6 +30,6 @@ export const AppDataSource: DataSource = new DataSource({
         ProductEntity,
         ProductCategoryEntity
     ],
-    migrations: [Asdfasfdas1689784220999],
+    migrations: [Jkbajkdsjkfnajsd1690112970257],
     synchronize: false
 });
