@@ -4,6 +4,7 @@ import { nameOf } from "../../helpers/helper";
 import { ProductEntity } from "./product.model";
 import { SalesmenEntity } from "./salesment.model";
 import { MerchantEntity } from "./merchant.model";
+import { ProductCategoryEntity } from "./productCategory.model";
 
 @Entity(Table_Name.orders)
 @Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')])
@@ -50,14 +51,14 @@ export class OrdersEntity extends BaseEntity {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @ManyToOne(() => ProductEntity)
+    @ManyToOne(() => ProductCategoryEntity)
     @JoinColumn([
         {
-            name: nameOf<OrdersEntity>('ProductId'),
-            referencedColumnName: nameOf<ProductEntity>('ProductId')
+            name: nameOf<OrdersEntity>('ProductCategoryId'),
+            referencedColumnName: nameOf<ProductCategoryEntity>('ProductCategoryId')
         }
     ])
-    product_details: ProductEntity
+    product_cat_details: ProductCategoryEntity
 
     @ManyToOne(() => MerchantEntity)
     @JoinColumn([
