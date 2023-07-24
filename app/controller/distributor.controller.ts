@@ -16,7 +16,7 @@ export const insertDistributor = async (req: CustomRequest, res: Response) => {
         DistributorTelNo: req.body?.DistributorTelNo,
         DistributorAddress: req.body?.DistributorAddress,
         DistributorCity: req.body?.DistributorCity,
-        BankName: req.body?.BankeName,
+        BankName: req.body?.BankName,
         IFSCCode: req.body?.IFSCCode,
         ChequeNumber1: req.body?.ChequeNumber1,
         ChequeNumber2: req.body.ChequeNumber2

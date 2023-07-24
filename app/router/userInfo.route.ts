@@ -9,6 +9,7 @@ router.post("/signUp", runAsyncWrapper(UserController.signUp));
 router.post("/login", runAsyncWrapper(UserController.login));
 router.get("/getUsersById", runAsyncWrapper(UserController.getUsersById));
 router.post("/assignRole", runAsyncWrapper(UserController.changeRole));
+router.post("/forgot", runAsyncWrapper(UserController.forgot));
 
 
 
