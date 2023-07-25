@@ -178,17 +178,7 @@ export const forgot = async (req: CustomRequest, res: Response) => {
           res.json({ err, whatss: "happan" });
         } else {
           findUser.Password = hase;
-          await userRepo
-            .update(findUser.UserId, findUser)
-            .then((result) => {
-              const response: any = { result };
-              return new SuccessResponse(
-                StatusCodes.OK,
-                response,
-                "Password Update!!"
-              ).send(res);
-            })
-            .catch((err) => res.json({ err, wrong: "asdfas" }));
+          await userRepo.save()
         }
       });
     });
