@@ -10,10 +10,10 @@ export const checkJWT = (req: any, res: any, next: any) => {
         development.managementApiCred.client_secret
       );
       req.userData = decode;
-      console.log(req.userData);
+      // console.log(req.userData);
     }
 
-    // next();
+    next();
   } catch (error: any) {
     if (error.name === "JsonWebTokenError") {
       res.status(401).send("Invalid token");
