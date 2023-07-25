@@ -178,7 +178,7 @@ export const forgot = async (req: CustomRequest, res: Response) => {
           res.json({ err, whatss: "happan" });
         } else {
           findUser.Password = hase;
-          await userRepo.save()
+          await findUser.save()
         }
       });
     });
