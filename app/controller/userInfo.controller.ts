@@ -179,6 +179,7 @@ export const forgot = async (req: CustomRequest, res: Response) => {
         } else {
           findUser.Password = hase;
           await findUser.save()
+          res.json({ "message": "Password Update successfully!!" })
         }
       });
     });
