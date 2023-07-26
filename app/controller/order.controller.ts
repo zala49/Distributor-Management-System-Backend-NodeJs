@@ -11,13 +11,15 @@ import { BadRequestError } from "../common/ApiErrorResponse";
 export const insertOrder = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
+    console.log(req.body);
+    
     const returnOrders = await orderRepo.upsert({
         OrderDate: req.body.OrderDate,
         ProductId: req.body.ProductId,
         ProductCategoryId: req.body?.ProductCategoryId,
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: req.body.SalesMen,
-        SalesmenId: req.body?.SalesManId,
+        SalesmenId: req.body.SalesmenId,
         MerchantId: req.body.MerchantId,
         Packing: req.body?.Packing,
         NOS: req.body?.NOS,
@@ -66,7 +68,7 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
             merchant_details: { distributor_details: true },
             product_cat_details: { product_details: true }
         },
-        where: { SalesmenId: req.query.SalesManId as any } })
+        where: { SalesmenId: '931f1be8-3fdf-4332-9a97-92d900fd6961' as any } })
     return new SuccessResponse(StatusCodes.OK, data, 'Get orders successfully!!').send(res);
 
 }

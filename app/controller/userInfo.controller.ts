@@ -104,6 +104,7 @@ export const signUp = async (req: CustomRequest, res: Response) => {
             .insert({
               Name: req.body.Name,
               Email: req.body.Email,
+              Role: req.body.Role,
               Picture: req.body?.Picture,
               Password: hase,
             })
