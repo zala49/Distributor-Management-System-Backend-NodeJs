@@ -52,8 +52,10 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
 };
 
 export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
+    console.log(req.query);
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
+    
     const data = await orderRepo.find({ 
         select: {
             OrderId: true, OrderDate: true, ProductQuantity: true,

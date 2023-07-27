@@ -24,12 +24,11 @@ app.use(ErrorHandlerMiddleware.handler);
 
 
 app.use("/api/user", UserRoute);
-app.use(checkJWT);
-app.use("/api/city", CityRoute);
-app.use("/api/product", ProductRoute);
-app.use("/api/order", OrderRoute);
-app.use("/api/merchant", MerchantRoute);
-app.use("/api/distributor", DistributorRoute);
+app.use("/api/city",checkJWT, CityRoute);
+app.use("/api/product",checkJWT, ProductRoute);
+app.use("/api/order",checkJWT, OrderRoute);
+app.use("/api/merchant",checkJWT, MerchantRoute);
+app.use("/api/distributor",checkJWT, DistributorRoute);
 
 server.listen(port, () => {
   console.log(`⚡️[server]: Server and Socket is running at http://localhost:${port}`)

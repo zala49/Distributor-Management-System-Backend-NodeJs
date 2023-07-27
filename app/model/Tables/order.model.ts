@@ -5,6 +5,7 @@ import { ProductEntity } from "./product.model";
 import { SalesmenEntity } from "./salesment.model";
 import { MerchantEntity } from "./merchant.model";
 import { ProductCategoryEntity } from "./productCategory.model";
+import { UserInfoEntity } from "./userInfo.model";
 
 @Entity(Table_Name.orders)
 @Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')])
@@ -70,14 +71,14 @@ export class OrdersEntity extends BaseEntity {
     merchant_details: MerchantEntity
 
     
-    @ManyToOne(() => SalesmenEntity)
+    @ManyToOne(() => UserInfoEntity)
     @JoinColumn([
         {
             name: nameOf<OrdersEntity>('SalesmenId'),
-            referencedColumnName: nameOf<SalesmenEntity>('SalesmanId')
+            referencedColumnName: nameOf<UserInfoEntity>('UserId')
         }
     ])
-    salesmen_details: SalesmenEntity
+    salesmen_details: UserInfoEntity
 
     static async modify(data: Record<string, any>) { };
 };
