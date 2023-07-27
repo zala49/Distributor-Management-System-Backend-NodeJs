@@ -19,7 +19,7 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         ProductCategoryId: req.body?.ProductCategoryId,
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: req.body.SalesMen,
-        SalesmenId: req.body.SalesmenId,
+        SalesmenId: req.body.SalesManId,
         MerchantId: req.body.MerchantId,
         Packing: req.body?.Packing,
         NOS: req.body?.NOS,
@@ -68,7 +68,7 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
             merchant_details: { distributor_details: true },
             product_cat_details: { product_details: true }
         },
-        where: { SalesmenId: '931f1be8-3fdf-4332-9a97-92d900fd6961' as any } })
+        where: { SalesmenId: req.query.SalesManId as any } })
     return new SuccessResponse(StatusCodes.OK, data, 'Get orders successfully!!').send(res);
 
 }
