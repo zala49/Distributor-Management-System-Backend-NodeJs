@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
@@ -48,7 +48,29 @@ export class DistributorEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @ManyToOne( () => CityEntity)
+    // @ManyToOne( () => CityEntity)
+    // @JoinColumn([
+    //     {
+    //         name: nameOf<DistributorEntity>('CityId'),
+    //         referencedColumnName: nameOf<CityEntity>('CityId')
+    //     }
+    // ])
+    // city_details: CityEntity
+
+    // @OneToMany(() => MerchantEntity, (merchant)=> merchant.distributor_details)
+    // @JoinColumn([
+    //     {
+    //         name: nameOf<DistributorEntity>('DistributorId'),
+    //         referencedColumnName: nameOf<MerchantEntity>('DistributorId')
+    //     },
+    //     {
+    //         name: nameOf<DistributorEntity>('CityId'),
+    //         referencedColumnName: nameOf<MerchantEntity>('CityId')
+    //     }
+    // ])
+    // merchant_details: MerchantEntity
+
+    @ManyToMany(() => CityEntity)
     @JoinColumn([
         {
             name: nameOf<DistributorEntity>('CityId'),
@@ -56,19 +78,6 @@ export class DistributorEntity extends BaseModel {
         }
     ])
     city_details: CityEntity
-
-    @OneToMany(() => MerchantEntity, (merchant)=> merchant.distributor_details)
-    @JoinColumn([
-        {
-            name: nameOf<DistributorEntity>('DistributorId'),
-            referencedColumnName: nameOf<MerchantEntity>('DistributorId')
-        },
-        {
-            name: nameOf<DistributorEntity>('CityId'),
-            referencedColumnName: nameOf<MerchantEntity>('CityId')
-        }
-    ])
-    merchant_details: MerchantEntity
     
     static async modify(data: Record<string, any>) { };
 };

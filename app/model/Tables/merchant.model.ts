@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGenerat
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
-import { DistributorEntity } from "./distributor.model";
+import { CityEntity } from "./city.model";
 
 @Entity(Table_Name.merchant)
 @Unique([nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantName')])
@@ -41,18 +41,28 @@ export class MerchantEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @ManyToOne( () => DistributorEntity)
+    // @ManyToOne( () => DistributorEntity)
+    // @JoinColumn([
+    //     {
+    //         name: nameOf<MerchantEntity>('DistributorId'),
+    //         referencedColumnName: nameOf<DistributorEntity>('DistributorId')
+    //     },
+    //     {
+    //         name: nameOf<MerchantEntity>('CityId'),
+    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
+    //     }
+    // ])
+    // distributor_details: DistributorEntity
+
+
+    @ManyToOne( () => CityEntity)
     @JoinColumn([
         {
-            name: nameOf<MerchantEntity>('DistributorId'),
-            referencedColumnName: nameOf<DistributorEntity>('DistributorId')
-        },
-        {
             name: nameOf<MerchantEntity>('CityId'),
-            referencedColumnName: nameOf<DistributorEntity>('CityId')
+            referencedColumnName: nameOf<CityEntity>('CityId')
         }
     ])
-    distributor_details: DistributorEntity
+    city_details: CityEntity
 
     static async modify(data: Record<string, any>) { };
 };

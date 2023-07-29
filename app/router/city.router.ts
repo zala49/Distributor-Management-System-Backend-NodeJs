@@ -9,7 +9,8 @@ router.post("/insertCity", CityController.insertCity);
 router.put("/updateCity", runAsyncWrapper(CityController.updateCity));
 router.delete("/deleteCity", runAsyncWrapper(CityController.deleteCity));
 router.get("/getCityById", runAsyncWrapper(CityController.getCityById));
-router.get("/getDistributorFromCity", runAsyncWrapper(CityController.getDistributorFromCity));
-router.get("/getMerchantFromDistributor", runAsyncWrapper(CityController.getMerchantFromDistributor));
+router.get("/getCityByDistributorId", runAsyncWrapper(CityController.getCityByDistributorId));
+// router.get("/getDistributorFromCity", runAsyncWrapper(CityController.getDistributorFromCity));
+// router.get("/getMerchantFromDistributor", runAsyncWrapper(CityController.getMerchantFromDistributor));
 
 export default router;

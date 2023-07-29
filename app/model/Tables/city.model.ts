@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
 import { DistributorEntity } from "./distributor.model";
+import { MerchantEntity } from "./merchant.model";
 
 @Entity(Table_Name.citys)
 @Unique([nameOf<CityEntity>('State'), nameOf<CityEntity>('CityName'), nameOf<CityEntity>('CityArea')])
@@ -26,7 +27,16 @@ export class CityEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @OneToMany(() => DistributorEntity, (distributor)=> distributor.city_details)
+    // @OneToMany(() => DistributorEntity, (distributor)=> distributor.city_details)
+    // @JoinColumn([
+    //     {
+    //         name: nameOf<CityEntity>('CityId'),
+    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
+    //     }
+    // ])
+    // distributor_details: DistributorEntity
+
+    @ManyToMany(() => DistributorEntity)
     @JoinColumn([
         {
             name: nameOf<CityEntity>('CityId'),
@@ -34,6 +44,15 @@ export class CityEntity extends BaseModel {
         }
     ])
     distributor_details: DistributorEntity
-    
+
+    @OneToMany(() => MerchantEntity, (merchant) => merchant.city_details)
+    @JoinColumn([
+        {
+            name: nameOf<CityEntity>('CityId'),
+            referencedColumnName: nameOf<MerchantEntity>('CityId')
+        }
+    ])
+    merchant_details: MerchantEntity
+
     static async modify(data: Record<string, any>) { };
 };
