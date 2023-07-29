@@ -5,14 +5,11 @@ import { OrdersEntity } from "../model/Tables/order.model";
 import { ErrorResponse, SuccessResponse } from "../common/ApiResponse";
 import { StatusCodes } from "http-status-codes";
 import { nameOf } from "../helpers/helper";
-import { USER_ROLES } from "../../config/constants";
 import { BadRequestError } from "../common/ApiErrorResponse";
 
 export const insertOrder = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
-    console.log(req.body);
-    
     const returnOrders = await orderRepo.upsert({
         OrderDate: req.body.OrderDate,
         ProductId: req.body.ProductId,
@@ -21,6 +18,7 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         SalesMen: req.body.SalesMen,
         SalesmenId: req.body.SalesManId,
         MerchantId: req.body.MerchantId,
+        DistributorId: req.body.DistributorId,
         Packing: req.body?.Packing,
         NOS: req.body?.NOS,
         Scheme: req.body?.Scheme
@@ -34,43 +32,26 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.find({
-        select: {
-            // OrderId: true, OrderDate: true, ProductQuantity: true,
-            merchant_details: {
-                MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
-                MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
-                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true }
-            },
-        },
         relations: {
             salesmen_details: true,
-            merchant_details: { distributor_details: true },
-            product_cat_details: { product_details: true }
+            product_cat_details: { product_details: true },
+            merchant_details: { city_details: { distributor_details: true } },
         }
     });
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
 };
 
 export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
-    console.log(req.query);
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
-    
-    const data = await orderRepo.find({ 
-        select: {
-            OrderId: true, OrderDate: true, ProductQuantity: true,
-            merchant_details: {
-                MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
-                MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
-                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true }
-            },
-        },
+    const data = await orderRepo.find({
         relations: {
             salesmen_details: true,
-            merchant_details: { distributor_details: true },
-            product_cat_details: { product_details: true }
+            product_cat_details: { product_details: true },
+            merchant_details: { city_details: { distributor_details: true } },
         },
-        where: { SalesmenId: req.query.SalesManId as any } })
+        where: { SalesmenId: req.query.SalesManId as any }
+    })
     return new SuccessResponse(StatusCodes.OK, data, 'Get orders successfully!!').send(res);
 
 }
@@ -79,18 +60,10 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
     const adminListOfOrder = await orderRepo.findOne({
-        select: {
-            // OrderId: true, OrderDate: true, ProductQuantity: true,NOS:true,Scheme:true,Packing:true,
-            merchant_details: {
-                MerchantId: true, MerchantName: true, MerchantGSTNumber: true, MerchantCity: true,
-                MerchantAddress: true, MerchantEmail: true, MerchantTelNo: true,
-                distributor_details: { CityId: true, DistributorId: true, DistributorName: true, DistributorCity: true, DistributorTelNo: true, DistributorAddress: true, BankName: true, ChequeNumber1: true, ChequeNumber2: true, IFSCCode: true }
-            },
-        },
         relations: {
             salesmen_details: true,
-            merchant_details: { distributor_details: true },
-            product_cat_details: { product_details: true }
+            product_cat_details: { product_details: true },
+            merchant_details: { city_details: { distributor_details: true } },
         },
         where: { OrderId: req.query.OrderId as any }
     });

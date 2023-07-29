@@ -1,11 +1,10 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { Table_Name } from "../Constant_Table";
 import { nameOf } from "../../helpers/helper";
-import { ProductEntity } from "./product.model";
-import { SalesmenEntity } from "./salesment.model";
 import { MerchantEntity } from "./merchant.model";
 import { ProductCategoryEntity } from "./productCategory.model";
 import { UserInfoEntity } from "./userInfo.model";
+import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.orders)
 @Unique([nameOf<OrdersEntity>('ProductId'), nameOf<OrdersEntity>('SalesMen'), nameOf<OrdersEntity>('ProductQuantity')])
@@ -18,6 +17,9 @@ export class OrdersEntity extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: true})
     ProductCategoryId: string
+
+    @Column({ type: 'uuid', nullable: true})
+    DistributorId: string
 
     @Column({type: 'uuid'})
     MerchantId: string
@@ -69,6 +71,15 @@ export class OrdersEntity extends BaseEntity {
         }
     ])
     merchant_details: MerchantEntity
+
+    @ManyToOne(() => DistributorEntity)
+    @JoinColumn([
+        {
+            name: nameOf<OrdersEntity>('DistributorId'),
+            referencedColumnName: nameOf<DistributorEntity>('DistributorId')
+        }
+    ])
+    distributor_details: DistributorEntity
 
     
     @ManyToOne(() => UserInfoEntity)

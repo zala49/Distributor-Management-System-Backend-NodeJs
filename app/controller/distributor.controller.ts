@@ -1,6 +1,6 @@
-import express, { Express, Request, Response } from 'express';
+import { Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
-import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
+import { SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { nameOf } from '../helpers/helper';
@@ -9,50 +9,59 @@ import { DistributorEntity } from '../model/Tables/distributor.model';
 export const insertDistributor = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
-    const returnDistributor = await distributorRepo.upsert({
-        CityId: req.body.CityId,
-        DistributorName: req.body.DistributorName,
-        DistributorEmail: req.body?.DistributorEmail,
-        DistributorTelNo: req.body?.DistributorTelNo,
-        DistributorAddress: req.body?.DistributorAddress,
-        DistributorCity: req.body?.DistributorCity,
-        BankName: req.body?.BankName,
-        IFSCCode: req.body?.IFSCCode,
-        ChequeNumber1: req.body?.ChequeNumber1,
-        ChequeNumber2: req.body.ChequeNumber2
-    }, {
-        conflictPaths: [nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')]
-    });
-    return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Added Distributor successfully!!').send(res);
+    if(req.body.CityId) {
+        for (const addData of ([req.body.CityId].flat())) {
+            const returnDistributor = await distributorRepo.upsert({
+                CityId: addData,
+                DistributorName: req.body.DistributorName,
+                DistributorEmail: req.body?.DistributorEmail,
+                DistributorTelNo: req.body?.DistributorTelNo,
+                DistributorAddress: req.body?.DistributorAddress,
+                DistributorCity: req.body?.DistributorCity,
+                BankName: req.body?.BankName,
+                IFSCCode: req.body?.IFSCCode,
+                ChequeNumber1: req.body?.ChequeNumber1,
+                ChequeNumber2: req.body.ChequeNumber2
+            }, {
+                conflictPaths: [nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')]
+            });
+            return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Added Distributor successfully!!').send(res);
+        
+        }
+    }
+    // const returnDistributor = await distributorRepo.upsert({
+    //     CityId: ([req.body.CityId].flat()),
+    //     DistributorName: req.body.DistributorName,
+    //     DistributorEmail: req.body?.DistributorEmail,
+    //     DistributorTelNo: req.body?.DistributorTelNo,
+    //     DistributorAddress: req.body?.DistributorAddress,
+    //     DistributorCity: req.body?.DistributorCity,
+    //     BankName: req.body?.BankName,
+    //     IFSCCode: req.body?.IFSCCode,
+    //     ChequeNumber1: req.body?.ChequeNumber1,
+    //     ChequeNumber2: req.body.ChequeNumber2
+    // }, {
+    //     conflictPaths: [nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')]
+    // });
+    // return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Added Distributor successfully!!').send(res);
 };
 export const getAllDistributor = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
-    const returnDistributor = await distributorRepo.find(
-        {
-            relations: {
-                city_details: true,
-                merchant_details: true
-            }
-        }
-    );
-    if (returnDistributor) {
+    const returnDistributor = await distributorRepo.find({relations: { city_details: true }});
+    if (returnDistributor.length) {
         return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get Distributor successfully!!').send(res);
-    };
+    } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Distributor not found!!').send(res);
 };
 
 export const getDistributorById = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const distributorRepo = database.getRepository(DistributorEntity);
-    const returnDistributor = await distributorRepo.findOne({ 
-        relations: {
-            city_details: true,
-            merchant_details: true
-        },
+    const returnDistributor = await distributorRepo.findOne({ relations: { city_details: true },
         where: { DistributorId: req.query.DistributorId as any }});
     if (returnDistributor) {
       return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get Distributor successfully!!').send(res);
-  } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No Distributor found!!').send(res);
+  } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'No Distributor found!!').send(res);
   };
 
 export const updateDistributor = async (req: CustomRequest, res: Response) => {

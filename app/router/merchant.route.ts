@@ -9,5 +9,6 @@ router.get("/getMerchantById", runAsyncWrapper(MerchantController.getMerchantByI
 router.post("/insertMerchant", MerchantController.insertMerchant);
 router.put("/updateMerchant", runAsyncWrapper(MerchantController.updateMerchant));
 router.delete("/deleteMerchant", runAsyncWrapper(MerchantController.deleteMerchant));
+router.get("/GetMerchantByCityId", runAsyncWrapper(MerchantController.GetMerchantByCityId));
 
 export default router;
