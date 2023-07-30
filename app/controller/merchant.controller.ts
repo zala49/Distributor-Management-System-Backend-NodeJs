@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import { Response } from 'express';
 import { CustomRequest } from '../interfaces/request.interface';
 import { ErrorResponse, SuccessResponse } from '../common/ApiResponse';
 import { StatusCodes } from 'http-status-codes';
@@ -15,6 +15,7 @@ export const insertMerchant = async (req: CustomRequest, res: Response) => {
         MerchantName: req.body.MerchantName,
         MerchantGSTNumber: req.body?.MerchantGSTNumber,
         MerchantEmail: req.body?.MerchantEmail,
+        FirmName: req.body?.FirmName,
         MerchantTelNo: req.body?.MerchantTelNo,
         MerchantAddress: req.body?.MerchantAddress,
         MerchantCity: req.body?.MerchantCity
@@ -26,14 +27,11 @@ export const insertMerchant = async (req: CustomRequest, res: Response) => {
 export const getAllMerchant = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
-    const returnMerchant = await merchantRepo.find({
-        relations: { distributor_details:  {city_details:true}}
-    });
+    const returnMerchant = await merchantRepo.find({ relations: { city_details: true, distributor_details: true }});
     if (returnMerchant) {
         return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get merchant successfully!!').send(res);
-    };
+    } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Merchant not found!!').send(res);
 };
-
 
 export const getMerchantById = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
@@ -41,7 +39,7 @@ export const getMerchantById = async (req: CustomRequest, res: Response) => {
     const returnMerchant = await merchanrRepo.findOne({ where: { MerchantId: req.query.MerchantId as any }});
     if (returnMerchant) {
       return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get Merchant successfully!!').send(res);
-  } else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No Merchant found!!').send(res);
+  } //else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No Merchant found!!').send(res);
   };
 
 export const updateMerchant = async (req: CustomRequest, res: Response) => {
@@ -63,3 +61,32 @@ export const deleteMerchant = async (req: CustomRequest, res: Response) => {
         return new SuccessResponse(StatusCodes.OK, {}, 'Merchant deleted successfully!!').send(res);
     };
 };
+
+export const GetMerchantByCityId = async (req: CustomRequest, res: Response) => {
+    if(!req.query.CityId){
+        return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide CityId!!').send(res);
+    };
+    const database = await connectToDatabase();
+    const merchantRepo = database.getRepository(MerchantEntity);
+    const returnMerchant = await merchantRepo.find({ where: { CityId: req.query.CityId as any }, relations: { city_details: true, distributor_details: true }});
+    if (returnMerchant) {
+        return new SuccessResponse(StatusCodes.OK, returnMerchant,   'Merchant get successfully!!').send(res);
+    } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Merchant Not Found!!').send(res);
+};
+
+
+
+/// Get All Ditributor
+// route =  /api/distributor/getAllDistributor
+// getAllDistributor ma dist_details mathi DistributorCityId Ly lejo..
+
+
+//Get City By Distributor
+//route = /api/city/getCityByDistributorId?DistributorId
+// Id = DistributorId
+
+
+// Get Merchant By CityID
+// Id = CityId
+// route=  /api/merchant/GetMerchantByCityId?CityId
+

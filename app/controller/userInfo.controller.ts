@@ -58,16 +58,17 @@ export const getUsers = async (req: CustomRequest, res: Response) => {
   const database = await connectToDatabase();
   const userRepo = database.getRepository(UserInfoEntity);
   const userData = await userRepo.find();
-  if (userData.length) {
+  if (userData) {
     return new SuccessResponse(
       StatusCodes.OK,
       userData,
       "User get successfully!!"
     ).send(res);
-  } else
-    return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(
-      res
-    );
+  }
+  //  else
+  //   return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(
+  //     res
+  //   );
 };
 
 export const getUsersById = async (req: CustomRequest, res: Response) => {
@@ -82,10 +83,11 @@ export const getUsersById = async (req: CustomRequest, res: Response) => {
       userData,
       "User get successfully!!"
     ).send(res);
-  } else
-    return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(
-      res
-    );
+  } 
+  // else
+  //   return new ErrorResponse(StatusCodes.NOT_FOUND, "No User found!!").send(
+  //     res
+  //   );
 };
 
 export const signUp = async (req: CustomRequest, res: Response) => {

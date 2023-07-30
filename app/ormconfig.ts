@@ -8,11 +8,19 @@ import { CityEntity } from "./model/Tables/city.model";
 import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
 import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
-import { Newww1690106380230 } from "./migrations/1690106380230-newww";
-import { Hajsbdjbafjks1690111519182 } from "./migrations/1690111519182-hajsbdjbafjks";
-import { Jkbajkdsjkfnajsd1690112970257 } from "./migrations/1690112970257-jkbajkdsjkfnajsd";
-import { Cityerror1690473975475 } from "./migrations/1690473975475-cityerror";
-import { User1690474571956 } from "./migrations/1690474571956-user";
+import { New1690628180145 } from "./migrations/1690628180145-new";
+import { New1690628331083 } from "./migrations/1690628331083-new";
+import { New1690628519973 } from "./migrations/1690628519973-new";
+import { New1690628603208 } from "./migrations/1690628603208-new";
+import { New1690628755612 } from "./migrations/1690628755612-new";
+import { DistributorCityEntity } from "./model/Tables/distributorCity.model";
+import { New1690629795083 } from "./migrations/1690629795083-new";
+import { New1690631247522 } from "./migrations/1690631247522-new";
+import { New1690638021109 } from "./migrations/1690638021109-new";
+import { Start1690695345000 } from "./migrations/1690695345000-start";
+import { Start1690697333199 } from "./migrations/1690697333199-start";
+import { Grate1690707628535 } from "./migrations/1690707628535-grate";
+
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
     host: development.host,
@@ -30,8 +38,9 @@ export const AppDataSource: DataSource = new DataSource({
         MerchantEntity,
         CityEntity,
         ProductEntity,
-        ProductCategoryEntity
+        ProductCategoryEntity,
+        DistributorCityEntity
     ],
-    migrations: [User1690474571956],
+    migrations: [Grate1690707628535],
     synchronize: false
 });

@@ -20,7 +20,7 @@ export class ProductEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @OneToMany(() => ProductCategoryEntity, (product_category)=> product_category.product_details)
+    @OneToMany(() => ProductCategoryEntity, (product_category)=> product_category.product_details,{cascade:['remove']})
     @JoinColumn([
         {
             name: nameOf<ProductEntity>('ProductId'),

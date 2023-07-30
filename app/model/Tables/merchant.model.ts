@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGenerat
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
+import { CityEntity } from "./city.model";
 import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.merchant)
@@ -19,6 +20,9 @@ export class MerchantEntity extends BaseModel {
 
     @Column()
     MerchantName: string
+
+    @Column({nullable: true})
+    FirmName: string
 
     @Column({nullable: true})
     MerchantGSTNumber: string
@@ -46,13 +50,19 @@ export class MerchantEntity extends BaseModel {
         {
             name: nameOf<MerchantEntity>('DistributorId'),
             referencedColumnName: nameOf<DistributorEntity>('DistributorId')
-        },
-        {
-            name: nameOf<MerchantEntity>('CityId'),
-            referencedColumnName: nameOf<DistributorEntity>('CityId')
         }
     ])
     distributor_details: DistributorEntity
+
+
+    @ManyToOne( () => CityEntity)
+    @JoinColumn([
+        {
+            name: nameOf<MerchantEntity>('CityId'),
+            referencedColumnName: nameOf<CityEntity>('CityId')
+        }
+    ])
+    city_details: CityEntity
 
     static async modify(data: Record<string, any>) { };
 };
