@@ -8,7 +8,6 @@ import { CityEntity } from "./model/Tables/city.model";
 import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
 import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
-<<<<<<< HEAD
 import { New1690628180145 } from "./migrations/1690628180145-new";
 import { New1690628331083 } from "./migrations/1690628331083-new";
 import { New1690628519973 } from "./migrations/1690628519973-new";
@@ -21,8 +20,6 @@ import { New1690638021109 } from "./migrations/1690638021109-new";
 import { Start1690695345000 } from "./migrations/1690695345000-start";
 import { Start1690697333199 } from "./migrations/1690697333199-start";
 import { Grate1690707628535 } from "./migrations/1690707628535-grate";
-=======
->>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -44,10 +41,6 @@ export const AppDataSource: DataSource = new DataSource({
         ProductCategoryEntity,
         DistributorCityEntity
     ],
-<<<<<<< HEAD
     migrations: [Grate1690707628535],
-=======
-    migrations: [],
->>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
     synchronize: false
 });
