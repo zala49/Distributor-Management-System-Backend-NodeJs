@@ -6,8 +6,11 @@ import { connectToDatabase } from '../utils/DatabaseUtils';
 import { CityEntity } from '../model/Tables/city.model';
 import { nameOf } from '../helpers/helper';
 import { DistributorEntity } from '../model/Tables/distributor.model';
+<<<<<<< HEAD
 import { DistributorCityEntity } from '../model/Tables/distributorCity.model';
 import { In } from 'typeorm';
+=======
+>>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
 
 export const insertCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
@@ -28,9 +31,13 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
     const returnCity = await cityRepo.find();
-    if (returnCity) {
+    if (returnCity.length) {
         return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
+<<<<<<< HEAD
     } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'City not found!!').send(res);
+=======
+    } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'City not found!!').send(res);
+>>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
 };
 
 export const getCityById = async (req: CustomRequest, res: Response) => {
@@ -65,11 +72,19 @@ export const deleteCity = async (req: CustomRequest, res: Response) => {
 export const getCityByDistributorId = async (req: CustomRequest, res: Response) => {
     if(!req.query.DistributorId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide distributorId!!').send(res);
     const database = await connectToDatabase();
+<<<<<<< HEAD
     const distributorRepo = database.getRepository(DistributorCityEntity);
     const result = await distributorRepo.find({ where: { DistributorId: In([req.query.DistributorId].flat()) as any }})
     if(result){
         return new SuccessResponse(StatusCodes.OK, result, 'Get distributor and city!').send(res)
     } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Not Found!!').send(res);
+=======
+    const distributorRepo = database.getRepository(DistributorEntity);
+    const result = await distributorRepo.findOne({ where: { DistributorId: req.query.DistributorId as any }, relations: { city_details: true }})
+    if(result){
+        return new SuccessResponse(StatusCodes.OK, result?.city_details, 'Get distributor and city!').send(res)
+    } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Not Found!!').send(res);
+>>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
 };
 // export const getDistributorFromCity = async (req: CustomRequest, res: Response) => {
 //     if (!req.query.CityId) throw new BadRequestError("Please provide city!!");
@@ -86,6 +101,7 @@ export const getCityByDistributorId = async (req: CustomRequest, res: Response) 
 //     });
 //     return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get distributor successfully!!').send(res);
 // };
+<<<<<<< HEAD
 
 // export const getMerchantFromDistributor = async (req: CustomRequest, res: Response) => {
 //     if (req.query.distributorId) throw new BadRequestError("Please provide distributor!!");
@@ -106,3 +122,24 @@ export const getCityByDistributorId = async (req: CustomRequest, res: Response) 
 //     return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get merchant successfully!!').send(res);
 // };
 
+=======
+
+// export const getMerchantFromDistributor = async (req: CustomRequest, res: Response) => {
+//     if (req.query.distributorId) throw new BadRequestError("Please provide distributor!!");
+//     const database = await connectToDatabase();
+//     const merchantRepo = database.getRepository(MerchantEntity);
+//     const returnDistributor = await merchantRepo.find({
+//         select: {
+//             CityId: true, MerchantAddress: true, MerchantCity: true, MerchantEmail: true,
+//             MerchantGSTNumber: true, MerchantId: true, MerchantName: true, MerchantTelNo: true,
+//             distributor_details: {
+//                 DistributorName: true, DistributorCity: true, DistributorTelNo: true,
+//                 DistributorId: true, DistributorEmail: true, DistributorAddress: true
+//             }
+//         },
+//         where: { DistributorId: req.query.DistributorId as any },
+//         relations: { distributor_details: true }
+//     });
+//     return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get merchant successfully!!').send(res);
+// };
+>>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
