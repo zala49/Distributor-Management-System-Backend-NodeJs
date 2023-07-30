@@ -3,6 +3,7 @@ import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
 import { CityEntity } from "./city.model";
+import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.merchant)
 @Unique([nameOf<MerchantEntity>('CityId'), nameOf<MerchantEntity>('DistributorId'), nameOf<MerchantEntity>('MerchantName')])
@@ -41,18 +42,14 @@ export class MerchantEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    // @ManyToOne( () => DistributorEntity)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<MerchantEntity>('DistributorId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('DistributorId')
-    //     },
-    //     {
-    //         name: nameOf<MerchantEntity>('CityId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
-    //     }
-    // ])
-    // distributor_details: DistributorEntity
+    @ManyToOne( () => DistributorEntity)
+    @JoinColumn([
+        {
+            name: nameOf<MerchantEntity>('DistributorId'),
+            referencedColumnName: nameOf<DistributorEntity>('DistributorId')
+        }
+    ])
+    distributor_details: DistributorEntity
 
 
     @ManyToOne( () => CityEntity)

@@ -6,6 +6,7 @@ import { connectToDatabase } from '../utils/DatabaseUtils';
 import { CityEntity } from '../model/Tables/city.model';
 import { nameOf } from '../helpers/helper';
 import { DistributorEntity } from '../model/Tables/distributor.model';
+import { DistributorCityEntity } from '../model/Tables/distributorCity.model';
 
 export const insertCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
@@ -16,7 +17,7 @@ export const insertCity = async (req: CustomRequest, res: Response) => {
             CityName: req.body.CityName,
             CityArea: data
         }, {
-            conflictPaths: [nameOf<CityEntity>('State'), nameOf<CityEntity>('CityArea'), nameOf<CityEntity>('CityName')]
+            conflictPaths: [nameOf<CityEntity>('State'), nameOf<CityEntity>('CityArea'), nameOf<CityEntity>('CityName'), nameOf<CityEntity>('CityId')]
         })
     }
     return new SuccessResponse(StatusCodes.OK, 'Added city successfully!!').send(res);
@@ -63,10 +64,10 @@ export const deleteCity = async (req: CustomRequest, res: Response) => {
 export const getCityByDistributorId = async (req: CustomRequest, res: Response) => {
     if(!req.query.DistributorId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'Please provide distributorId!!').send(res);
     const database = await connectToDatabase();
-    const distributorRepo = database.getRepository(DistributorEntity);
-    const result = await distributorRepo.findOne({ where: { DistributorId: req.query.DistributorId as any }, relations: { city_details: true }})
+    const distributorRepo = database.getRepository(DistributorCityEntity);
+    const result = await distributorRepo.findOne({ where: { DistributorId: req.query.DistributorId as any }})
     if(result){
-        return new SuccessResponse(StatusCodes.OK, result?.city_details, 'Get distributor and city!').send(res)
+        return new SuccessResponse(StatusCodes.OK, result, 'Get distributor and city!').send(res)
     } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Not Found!!').send(res);
 };
 // export const getDistributorFromCity = async (req: CustomRequest, res: Response) => {

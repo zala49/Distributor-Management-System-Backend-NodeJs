@@ -4,16 +4,17 @@ import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
 import { CityEntity } from "./city.model";
 import { MerchantEntity } from "./merchant.model";
+import { DistributorCityEntity } from "./distributorCity.model";
 
 @Entity(Table_Name.distributor)
-@Unique([nameOf<DistributorEntity>('CityId'), nameOf<DistributorEntity>('DistributorId')])
+@Unique([nameOf<DistributorEntity>('DistributorId')])
 
 export class DistributorEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
     DistributorId: string
 
-    @Column({type: 'uuid'})
-    CityId: string
+    // @Column({type: 'uuid'})
+    // CityId: string
 
     @Column()
     DistributorName: string
@@ -27,8 +28,8 @@ export class DistributorEntity extends BaseModel {
     @Column({nullable: true})
     DistributorAddress: string
 
-    @Column({nullable: true})
-    DistributorCity: string
+    // @Column({nullable: true})
+    // DistributorCity: string
 
     @Column({nullable: true})
     IFSCCode: string
@@ -48,36 +49,14 @@ export class DistributorEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    // @ManyToOne( () => CityEntity)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<DistributorEntity>('CityId'),
-    //         referencedColumnName: nameOf<CityEntity>('CityId')
-    //     }
-    // ])
-    // city_details: CityEntity
-
-    // @OneToMany(() => MerchantEntity, (merchant)=> merchant.distributor_details)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<DistributorEntity>('DistributorId'),
-    //         referencedColumnName: nameOf<MerchantEntity>('DistributorId')
-    //     },
-    //     {
-    //         name: nameOf<DistributorEntity>('CityId'),
-    //         referencedColumnName: nameOf<MerchantEntity>('CityId')
-    //     }
-    // ])
-    // merchant_details: MerchantEntity
-
-    @ManyToMany(() => CityEntity)
+    @OneToMany(() => DistributorCityEntity, (dis_city)=> dis_city.dis_details, {cascade:['remove']})
     @JoinColumn([
         {
-            name: nameOf<DistributorEntity>('CityId'),
-            referencedColumnName: nameOf<CityEntity>('CityId')
+            name: nameOf<DistributorEntity>('DistributorId'),
+            referencedColumnName: nameOf<DistributorCityEntity>('DistributorId')
         }
     ])
-    city_details: CityEntity
+    dist_details: DistributorCityEntity
     
     static async modify(data: Record<string, any>) { };
 };

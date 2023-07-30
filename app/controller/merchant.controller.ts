@@ -26,7 +26,7 @@ export const insertMerchant = async (req: CustomRequest, res: Response) => {
 export const getAllMerchant = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
-    const returnMerchant = await merchantRepo.find({ relations: { city_details: { distributor_details: true }}});
+    const returnMerchant = await merchantRepo.find({ relations: { city_details: true, distributor_details: true }});
     if (returnMerchant.length) {
         return new SuccessResponse(StatusCodes.OK, returnMerchant, 'Get merchant successfully!!').send(res);
     } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Merchant not found!!').send(res);
@@ -72,3 +72,20 @@ export const GetMerchantByCityId = async (req: CustomRequest, res: Response) => 
         return new SuccessResponse(StatusCodes.OK, {}, 'Merchant deleted successfully!!').send(res);
     } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Merchant Not Found!!').send(res);
 };
+
+
+
+/// Get All Ditributor
+// route =  /api/distributor/getAllDistributor
+// getAllDistributor ma dist_details mathi DistributorCityId Ly lejo..
+
+
+//Get City By Distributor
+//route = /api/city/getCityByDistributorId?DistributorId
+// Id = DistributorId
+
+
+// Get Merchant By CityID
+// Id = CityId
+// route=  /api/merchant/GetMerchantByCityId?CityId
+

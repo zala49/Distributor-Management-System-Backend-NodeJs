@@ -74,10 +74,9 @@ export const updateProductCategory = async (req: CustomRequest, res: Response) =
     const productCatRepo = database.getRepository(ProductCategoryEntity);
     const returnProductCat = await productCatRepo.findOne({ where: { ProductId: req.body.ProductId as any } })
     if(!req.query.ProductCategoryId) return new ErrorResponse(StatusCodes.NOT_FOUND, 'ProductCategoryId Not Found!!');
-    const updatedData = { ...returnProductCat, ...req.body }
-    const update = await productCatRepo.update(req.query.ProductCategoryId as any, updatedData);
+    const update = await productCatRepo.update(req.query.ProductCategoryId as any,{...req.body});
     if (update) {
-        return new SuccessResponse(StatusCodes.OK, updatedData, 'Updated product category successfully!!').send(res);
+        return new SuccessResponse(StatusCodes.OK, {...req.body}, 'Updated product category successfully!!').send(res);
     };
 }
 

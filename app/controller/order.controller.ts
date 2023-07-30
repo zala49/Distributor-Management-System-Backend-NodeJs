@@ -16,7 +16,7 @@ export const insertOrder = async (req: CustomRequest, res: Response) => {
         ProductCategoryId: req.body?.ProductCategoryId,
         ProductQuantity: req.body.ProductQuantity,
         SalesMen: req.body.SalesMen,
-        SalesmenId: req.body.SalesManId,
+        SalesmenId: req.body.SalesmenId,
         MerchantId: req.body.MerchantId,
         DistributorId: req.body.DistributorId,
         Packing: req.body?.Packing,
@@ -35,7 +35,8 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             product_cat_details: { product_details: true },
-            merchant_details: { city_details: { distributor_details: true } },
+            merchant_details: { city_details: true },
+            distributor_details: true
         }
     });
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
@@ -48,7 +49,7 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             product_cat_details: { product_details: true },
-            merchant_details: { city_details: { distributor_details: true } },
+            merchant_details: { city_details: true },
         },
         where: { SalesmenId: req.query.SalesManId as any }
     })
@@ -63,7 +64,8 @@ export const getOrderById = async (req: CustomRequest, res: Response) => {
         relations: {
             salesmen_details: true,
             product_cat_details: { product_details: true },
-            merchant_details: { city_details: { distributor_details: true } },
+            merchant_details: { city_details: true },
+            distributor_details: true
         },
         where: { OrderId: req.query.OrderId as any }
     });
@@ -78,9 +80,10 @@ export const updateOrders = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const findOrder = await orderRepo.findOne({ where: { OrderId: req.query.Id as any } });
     const updatedData = { ...findOrder, ...req.body };
-    const update = await orderRepo.update(req.query.Id as any, updatedData);
+    console.log({"quer": req.query, "body": req.body, "updatedData": updatedData})
+    const update = await orderRepo.update(req.query.Id as any,{ ...req.body});
     if (update) {
-        return new SuccessResponse(StatusCodes.OK, updatedData, 'Uodated order successfully!!').send(res);
+        return new SuccessResponse(StatusCodes.OK, {...req.body}, 'Uodated order successfully!!').send(res);
     }
 };
 

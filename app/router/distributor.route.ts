@@ -9,5 +9,6 @@ router.get("/getDistributorById", runAsyncWrapper(DistributorController.getDistr
 router.post("/insertDistributor", DistributorController.insertDistributor);
 router.put("/updateDistributor", runAsyncWrapper(DistributorController.updateDistributor));
 router.delete("/deleteDistributor", runAsyncWrapper(DistributorController.deleteDistributor));
+router.delete("/deleteDistCity", runAsyncWrapper(DistributorController.deleteDisCity));
 
 export default router;
