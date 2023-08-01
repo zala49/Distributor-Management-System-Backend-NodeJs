@@ -19,7 +19,6 @@ import { New1690631247522 } from "./migrations/1690631247522-new";
 import { New1690638021109 } from "./migrations/1690638021109-new";
 import { Start1690695345000 } from "./migrations/1690695345000-start";
 import { Start1690697333199 } from "./migrations/1690697333199-start";
-import { Grate1690707628535 } from "./migrations/1690707628535-grate";
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -41,6 +40,6 @@ export const AppDataSource: DataSource = new DataSource({
         ProductCategoryEntity,
         DistributorCityEntity
     ],
-    migrations: [Grate1690707628535],
+    migrations: [Start1690697333199],
     synchronize: false
 });

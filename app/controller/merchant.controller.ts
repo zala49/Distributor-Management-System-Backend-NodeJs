@@ -68,7 +68,6 @@ export const GetMerchantByCityId = async (req: CustomRequest, res: Response) => 
     };
     const database = await connectToDatabase();
     const merchantRepo = database.getRepository(MerchantEntity);
-<<<<<<< HEAD
     const returnMerchant = await merchantRepo.find({ where: { CityId: req.query.CityId as any }, relations: { city_details: true, distributor_details: true }});
     if (returnMerchant) {
         return new SuccessResponse(StatusCodes.OK, returnMerchant,   'Merchant get successfully!!').send(res);
@@ -91,10 +90,3 @@ export const GetMerchantByCityId = async (req: CustomRequest, res: Response) => 
 // Id = CityId
 // route=  /api/merchant/GetMerchantByCityId?CityId
 
-=======
-    const returnMerchant = await merchantRepo.find({ where: { CityId: req.query.CityId as any }, relations: { city_details: true }});
-    if (returnMerchant.length) {
-        return new SuccessResponse(StatusCodes.OK, {}, 'Merchant deleted successfully!!').send(res);
-    } else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Merchant Not Found!!').send(res);
-};
->>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d

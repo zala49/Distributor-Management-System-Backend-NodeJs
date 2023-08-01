@@ -45,33 +45,14 @@ export class MerchantEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    // @ManyToOne( () => DistributorEntity)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<MerchantEntity>('DistributorId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('DistributorId')
-    //     },
-    //     {
-    //         name: nameOf<MerchantEntity>('CityId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
-    //     }
-    // ])
-    // distributor_details: DistributorEntity
-
-
-    @ManyToOne( () => CityEntity)
+    @ManyToOne( () => DistributorEntity)
     @JoinColumn([
         {
-<<<<<<< HEAD
             name: nameOf<MerchantEntity>('DistributorId'),
             referencedColumnName: nameOf<DistributorEntity>('DistributorId')
-=======
-            name: nameOf<MerchantEntity>('CityId'),
-            referencedColumnName: nameOf<CityEntity>('CityId')
->>>>>>> 3e60f3ff6e028c5fe0a6a892f2e6b71dd0b2695d
         }
     ])
-    city_details: CityEntity
+    distributor_details: DistributorEntity
 
 
     @ManyToOne( () => CityEntity)
