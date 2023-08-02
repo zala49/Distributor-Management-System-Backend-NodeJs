@@ -42,6 +42,7 @@ export const getOrders = async (req: CustomRequest, res: Response) => {
     return new SuccessResponse(StatusCodes.OK, adminListOfOrder, 'Get orders successfully!!').send(res);
 };
 
+
 export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const orderRepo = database.getRepository(OrdersEntity);
@@ -50,6 +51,7 @@ export const getSalesmenOrders = async (req: CustomRequest, res: Response) => {
             salesmen_details: true,
             product_cat_details: { product_details: true },
             merchant_details: { city_details: true },
+            distributor_details: true
         },
         where: { SalesmenId: req.query.SalesManId as any }
     })
