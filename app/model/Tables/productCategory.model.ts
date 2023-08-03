@@ -23,6 +23,9 @@ export class ProductCategoryEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
+    @Column({ default: false })
+  deleted: boolean;
+
     @ManyToOne( () => ProductEntity)
     @JoinColumn([
         {

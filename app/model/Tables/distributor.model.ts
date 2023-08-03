@@ -28,9 +28,6 @@ export class DistributorEntity extends BaseModel {
     @Column({nullable: true})
     DistributorAddress: string
 
-    // @Column({nullable: true})
-    // DistributorCity: string
-
     @Column({nullable: true})
     FirmName: string
 
@@ -52,7 +49,7 @@ export class DistributorEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    @OneToMany(() => DistributorCityEntity, (dis_city)=> dis_city.dis_details, {cascade:['remove']})
+    @OneToMany(() => DistributorCityEntity, (dis_city)=> dis_city.dis_details)
     @JoinColumn([
         {
             name: nameOf<DistributorEntity>('DistributorId'),

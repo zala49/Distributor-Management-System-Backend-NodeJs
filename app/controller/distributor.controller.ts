@@ -151,14 +151,18 @@ export const deleteDisCity = async (req: CustomRequest, res: Response) => {
   const database = await connectToDatabase();
   const distributorRepo = database.getRepository(DistributorCityEntity);
   const findCity = await distributorRepo.findOne({
-    where: { DistributorCityId: req.query.DistributorCityId as any },
+    where: { DistributorCityId: req.query.DistributorCityId as any, 
+      DistributorId: req.query.DistributorId as any },
   });
+  console.log({findCity});
+  
   if(findCity){
-    // await distributorRepo.delete({
-    //   DistributorId: req.query.DistributorId as any,
-    // });
-    findCity.remove();
-    findCity.save();
+    await distributorRepo.delete({
+      DistributorId: req.query.DistributorId as any,
+      DistributorCityId: req.query.DistributorCityId as any
+    });
+    // findCity.remove();
+    // findCity.save();
       return new SuccessResponse(
         StatusCodes.OK,
         {},

@@ -27,25 +27,7 @@ export class CityEntity extends BaseModel {
     @UpdateDateColumn()
     UpdatedAt: Date
 
-    // @OneToMany(() => DistributorEntity, (distributor)=> distributor.city_details)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<CityEntity>('CityId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
-    //     }
-    // ])
-    // distributor_details: DistributorEntity
-
-    // @ManyToOne(() => DistributorEntity)
-    // @JoinColumn([
-    //     {
-    //         name: nameOf<CityEntity>('CityId'),
-    //         referencedColumnName: nameOf<DistributorEntity>('CityId')
-    //     }
-    // ])
-    // distributor_details: DistributorEntity
-
-    @OneToMany(() => MerchantEntity, (merchant) => merchant.city_details,{cascade:['remove']})
+    @OneToMany(() => MerchantEntity, (merchant) => merchant.city_details)
     @JoinColumn([
         {
             name: nameOf<CityEntity>('CityId'),
