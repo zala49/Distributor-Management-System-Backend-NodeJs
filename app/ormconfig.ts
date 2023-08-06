@@ -9,8 +9,6 @@ import { ProductEntity } from "./model/Tables/product.model";
 import { development } from "../config/environment";
 import { ProductCategoryEntity } from "./model/Tables/productCategory.model";
 import { DistributorCityEntity } from "./model/Tables/distributorCity.model";
-import { New1691082118392 } from "./migrations/1691082118392-new";
-
 
 export const AppDataSource: DataSource = new DataSource({
     type:'postgres',
@@ -32,6 +30,6 @@ export const AppDataSource: DataSource = new DataSource({
         ProductCategoryEntity,
         DistributorCityEntity
     ],
-    migrations: [New1691082118392],
+    migrations: [],
     synchronize: false
 });

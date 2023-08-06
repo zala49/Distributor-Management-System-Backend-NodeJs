@@ -98,7 +98,6 @@ export const signUp = async (req: CustomRequest, res: Response) => {
     if (!req.body.Password) throw new BadRequestError("password not found!!");
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.Password, 10, async (err, hase) => {
-        console.log(hase, "hase");
         if (err) {
           res.send(err);
         } else {
@@ -141,7 +140,6 @@ export const login = async (req: CustomRequest, res: Response) => {
       req.body.Password,
       findUser.Password,
       async (err, logUser) => {
-        console.log(logUser, "hase");
         if (logUser === false) {
           return new ErrorResponse(
             StatusCodes.BAD_REQUEST,
@@ -169,14 +167,12 @@ export const login = async (req: CustomRequest, res: Response) => {
 };
 
 export const forgot = async (req: CustomRequest, res: Response) => {
-  console.log(req);
   const database = await connectToDatabase();
   const userRepo = database.getRepository(UserInfoEntity);
   const findUser = await userRepo.findOne({ where: { Email: req.body.Email } });
   if (findUser) {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.Password, 10, async (err, hase) => {
-        console.log(hase, "hase");
         if (err) {
           res.json({ err, whatss: "happan" });
         } else {

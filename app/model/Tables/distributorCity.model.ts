@@ -2,7 +2,6 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGenerat
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
-import { ProductEntity } from "./product.model";
 import { DistributorEntity } from "./distributor.model";
 
 @Entity(Table_Name.distributor_city)

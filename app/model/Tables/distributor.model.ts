@@ -1,9 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { Table_Name } from "../Constant_Table";
 import { BaseModel } from "../Basemodel/basemodel";
 import { nameOf } from "../../helpers/helper";
-import { CityEntity } from "./city.model";
-import { MerchantEntity } from "./merchant.model";
 import { DistributorCityEntity } from "./distributorCity.model";
 
 @Entity(Table_Name.distributor)
@@ -12,9 +10,6 @@ import { DistributorCityEntity } from "./distributorCity.model";
 export class DistributorEntity extends BaseModel {
     @PrimaryGeneratedColumn('uuid')
     DistributorId: string
-
-    // @Column({type: 'uuid'})
-    // CityId: string
 
     @Column()
     DistributorName: string

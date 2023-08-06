@@ -6,9 +6,7 @@ export const checkJWT = (req: any, res: any, next: any) => {
     if (req.headers.authorization != '') {
       const token = req.headers.authorization.split(" ")[1];
       const decode = jwt.verify(token, development.managementApiCred.client_secret);
-      req.userData = decode;
-      console.log(req.userData);
-      
+      req.userData = decode;      
     }
     next();
   } catch (error) {

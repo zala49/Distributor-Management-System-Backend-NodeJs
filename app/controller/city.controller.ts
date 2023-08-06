@@ -5,9 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import { connectToDatabase } from '../utils/DatabaseUtils';
 import { CityEntity } from '../model/Tables/city.model';
 import { nameOf } from '../helpers/helper';
-import { DistributorEntity } from '../model/Tables/distributor.model';
 import { DistributorCityEntity } from '../model/Tables/distributorCity.model';
 import { In } from 'typeorm';
+import { MerchantEntity } from '../model/Tables/merchant.model';
+import { OrdersEntity } from '../model/Tables/order.model';
 
 export const insertCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
@@ -30,7 +31,7 @@ export const getAllCity = async (req: CustomRequest, res: Response) => {
     const returnCity = await cityRepo.find();
     if (returnCity) {
         return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
-    } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'City not found!!').send(res);
+    } 
 };
 
 export const getCityById = async (req: CustomRequest, res: Response) => {
@@ -39,23 +40,43 @@ export const getCityById = async (req: CustomRequest, res: Response) => {
     const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any } });
     if (returnCity) {
         return new SuccessResponse(StatusCodes.OK, returnCity, 'Get city successfully!!').send(res);
-    } //else return new ErrorResponse(StatusCodes.NOT_FOUND, 'No city found!!').send(res);
+    } 
 };
 
 export const updateCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
-    const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any } })
-    const updatedData = { ...returnCity, ...req.body }
-    const update = await cityRepo.update(req.query.CityId as any, updatedData);
-    if (update) {
-        return new SuccessResponse(StatusCodes.OK, updatedData, 'Updated city successfully!!').send(res);
-    };
+    const disCityRepo = database.getRepository(DistributorCityEntity);
+    if(req.query.CityId){
+        const returnCity = await cityRepo.findOne({ where: { CityId: req.query.CityId as any } })
+        const disCity = await disCityRepo.findOne({ where: {DistributorCityId: req.query.CityId as any }});
+        if(disCity && req.body.CityArea) {
+            await disCityRepo.update(disCity.DCityPrimary, { DistributorCityName: req.body.CityArea });
+        };
+        const updatedData = { ...returnCity, ...req.body }
+        const update = await cityRepo.update(req.query.CityId as any, updatedData);
+        if (update) {
+            return new SuccessResponse(StatusCodes.OK, updatedData, 'Updated city successfully!!').send(res);
+        };
+    }
 };
 
 export const deleteCity = async (req: CustomRequest, res: Response) => {
     const database = await connectToDatabase();
     const cityRepo = database.getRepository(CityEntity);
+    const disCityRepo = database.getRepository(DistributorCityEntity);
+    const merchantRepo = database.getRepository(MerchantEntity);
+    const orderRepo = database.getRepository(OrdersEntity);
+    if(req.query.CityId) {
+        const findDisCity = await disCityRepo.find({ where: { DistributorCityId: In([req.query.CityId].flat()) as any }});
+        if(findDisCity){ for(const d of findDisCity) await d.remove() }
+        const findMerchant = await merchantRepo.find({ where: { CityId: req.query.CityId as any }});
+        for (const m of findMerchant ){
+            const findOrder = await orderRepo.find({ where: { MerchantId: In([m.MerchantId].flat())}});
+            for(const o of findOrder) { await o.remove() };
+            await m.remove();
+        }
+    }
     const returnCity = await cityRepo.delete({ CityId: req.query.CityId as any });
     if (returnCity) {
         return new SuccessResponse(StatusCodes.OK, {}, 'City deleted successfully!!').send(res);
@@ -69,40 +90,5 @@ export const getCityByDistributorId = async (req: CustomRequest, res: Response) 
     const result = await distributorRepo.find({ where: { DistributorId: In([req.query.DistributorId].flat()) as any }})
     if(result){
         return new SuccessResponse(StatusCodes.OK, result, 'Get distributor and city!').send(res)
-    } //else return new SuccessResponse(StatusCodes.NOT_FOUND, 'Not Found!!').send(res);
+    } 
 };
-// export const getDistributorFromCity = async (req: CustomRequest, res: Response) => {
-//     if (!req.query.CityId) throw new BadRequestError("Please provide city!!");
-//     const database = await connectToDatabase();
-//     const distributorRepo = database.getRepository(DistributorEntity);
-//     const returnDistributor = await distributorRepo.find({
-//         where: { CityId: req.query.CityId as any },
-//         select: {
-//             DistributorName: true, DistributorCity: true, DistributorEmail: true,
-//             DistributorAddress: true, DistributorTelNo: true, DistributorId: true,
-//             city_details: { CityId: true, CityName: true, CityArea: true, State: true }
-//         },
-//         relations: { city_details: true }
-//     });
-//     return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get distributor successfully!!').send(res);
-// };
-
-// export const getMerchantFromDistributor = async (req: CustomRequest, res: Response) => {
-//     if (req.query.distributorId) throw new BadRequestError("Please provide distributor!!");
-//     const database = await connectToDatabase();
-//     const merchantRepo = database.getRepository(MerchantEntity);
-//     const returnDistributor = await merchantRepo.find({
-//         select: {
-//             CityId: true, MerchantAddress: true, MerchantCity: true, MerchantEmail: true,
-//             MerchantGSTNumber: true, MerchantId: true, MerchantName: true, MerchantTelNo: true,
-//             distributor_details: {
-//                 DistributorName: true, DistributorCity: true, DistributorTelNo: true,
-//                 DistributorId: true, DistributorEmail: true, DistributorAddress: true
-//             }
-//         },
-//         where: { DistributorId: req.query.DistributorId as any },
-//         relations: { distributor_details: true }
-//     });
-//     return new SuccessResponse(StatusCodes.OK, returnDistributor, 'Get merchant successfully!!').send(res);
-// };
-

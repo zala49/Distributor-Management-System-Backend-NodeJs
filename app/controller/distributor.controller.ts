@@ -7,9 +7,11 @@ import { nameOf } from "../helpers/helper";
 import { DistributorEntity } from "../model/Tables/distributor.model";
 import { DistributorCityEntity } from "../model/Tables/distributorCity.model";
 import { CityEntity } from "../model/Tables/city.model";
+import { MerchantEntity } from "../model/Tables/merchant.model";
+import { OrdersEntity } from "../model/Tables/order.model";
+import { In } from "typeorm";
 
 export const insertDistributor = async (req: CustomRequest, res: Response) => {
-  444;
   const database = await connectToDatabase();
   const distributorRepo = database.getRepository(DistributorEntity);
   const disCityRepo = database.getRepository(DistributorCityEntity);
@@ -63,7 +65,7 @@ export const getAllDistributor = async (req: CustomRequest, res: Response) => {
       returnDistributor,
       "Get Distributor successfully!!"
     ).send(res);
-  } //else return new SuccessResponse( StatusCodes.NOT_FOUND, "Distributor not found!!").send(res);
+  } 
 };
 
 export const getDistributorById = async (req: CustomRequest, res: Response) => {
@@ -80,11 +82,6 @@ export const getDistributorById = async (req: CustomRequest, res: Response) => {
       "Get Distributor successfully!!"
     ).send(res);
   }
-  // else
-  //   return new SuccessResponse(
-  //     StatusCodes.NOT_FOUND,
-  //     "No Distributor found!!"
-  //   ).send(res);
 };
 
 export const updateDistributor = async (req: CustomRequest, res: Response) => {
@@ -102,7 +99,6 @@ export const updateDistributor = async (req: CustomRequest, res: Response) => {
       if (findCity) {
         await disCityRepo.upsert(
           {
-            // findCity.CityId, {DistributorCityName: findCity.CityArea }
             DistributorCityId: findCity.CityId,
             DistributorId: req.query.DistributorId as string,
             DistributorCityName: findCity.CityArea,
@@ -135,6 +131,21 @@ export const updateDistributor = async (req: CustomRequest, res: Response) => {
 export const deleteDistributor = async (req: CustomRequest, res: Response) => {
   const database = await connectToDatabase();
   const distributorRepo = database.getRepository(DistributorEntity);
+  const merchantRepo = database.getRepository(MerchantEntity);
+  const orderRepo = database.getRepository(OrdersEntity);
+  const disCityRepo = database.getRepository(DistributorCityEntity);
+  if(req.query.DistributorId) {
+    const findMerchant = await merchantRepo.find({ where: { DistributorId: In([req.query.DistributorId].flat()) as any }});
+    for (const d of findMerchant){
+      const findOrder = await orderRepo.findOne({ where: { MerchantId: d.MerchantId }})
+      if(findOrder) await findOrder.remove();
+      await d.remove()
+    };
+    const findDisCity = await disCityRepo.find({ where: { DistributorId: In([req.query.DistributorId].flat()) as any}});
+    for (const c of findDisCity) {
+      await c.remove();
+    }
+  }
   const returnDistributor = await distributorRepo.delete({
     DistributorId: req.query.DistributorId as any,
   });
@@ -154,15 +165,12 @@ export const deleteDisCity = async (req: CustomRequest, res: Response) => {
     where: { DistributorCityId: req.query.DistributorCityId as any, 
       DistributorId: req.query.DistributorId as any },
   });
-  console.log({findCity});
   
   if(findCity){
     await distributorRepo.delete({
       DistributorId: req.query.DistributorId as any,
       DistributorCityId: req.query.DistributorCityId as any
     });
-    // findCity.remove();
-    // findCity.save();
       return new SuccessResponse(
         StatusCodes.OK,
         {},

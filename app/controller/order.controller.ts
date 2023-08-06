@@ -82,7 +82,6 @@ export const updateOrders = async (req: CustomRequest, res: Response) => {
     const orderRepo = database.getRepository(OrdersEntity);
     const findOrder = await orderRepo.findOne({ where: { OrderId: req.query.Id as any } });
     const updatedData = { ...findOrder, ...req.body };
-    console.log({"quer": req.query, "body": req.body, "updatedData": updatedData})
     const update = await orderRepo.update(req.query.Id as any,{ ...req.body});
     if (update) {
         return new SuccessResponse(StatusCodes.OK, {...req.body}, 'Uodated order successfully!!').send(res);

@@ -28,13 +28,9 @@ export class ProductEntity extends BaseModel {
   @UpdateDateColumn()
   UpdatedAt: Date;
 
-  @Column({ default: false })
-  deleted: boolean;
-
   @OneToMany(
     () => ProductCategoryEntity,
-    (product_category) => product_category.product_details,
-    { cascade: ['soft-remove'] }
+    (product_category) => product_category.product_details
   )
   @JoinColumn([
     {
